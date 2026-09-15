@@ -14983,6 +14983,7 @@
       const rowUndo = document.getElementById('row-settings-max-undo');
       const rowIdle = document.getElementById('row-settings-idle-caching');
       const btnSaveOfts = document.getElementById('btn-settings-save-ofts');
+      const btnDeletePrj = document.getElementById('btn-editor-delete-project');
 
       const isPrecomp = !!currentActivePrecomp;
       if (titleEl) {
@@ -14991,6 +14992,7 @@
       if (rowUndo) rowUndo.style.display = isPrecomp ? 'none' : '';
       if (rowIdle) rowIdle.style.display = isPrecomp ? 'none' : '';
       if (btnSaveOfts) btnSaveOfts.style.display = isPrecomp ? 'none' : '';
+      if (btnDeletePrj) btnDeletePrj.style.display = isPrecomp ? 'none' : '';
 
       const targetState = isPrecomp ? {
         aspectRatio: currentActivePrecomp.aspectRatio || currentProjectState.aspectRatio || '16:9',
@@ -15305,9 +15307,51 @@
 
       // 5. Close Modal
       if (window.Modal) {
-        window.Modal.close();
+        window.Modal.close(false);
       }
     }
+
+    // Delete Project from Editor Action (with confirmation and redirect to index.html)
+    async function deleteProjectFromEditorAction() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = (currentProjectState && currentProjectState.id) || urlParams.get('id') || '';
+      const projectName = (currentProjectState && currentProjectState.name) || 'Current Project';
+
+      const confirmed = window.confirm(`Are you sure you want to permanently delete "${projectName}"?\n\nThis action cannot be undone.`);
+      if (!confirmed) return;
+
+      try {
+        if (window.Modal) {
+          window.Modal.close(false);
+        }
+
+        // Clear emergency autosave to avoid stale restoration
+        try {
+          localStorage.removeItem('sharktool_emergency_layers');
+          localStorage.removeItem('oft_emergency_layers');
+        } catch (_) {}
+
+        if (window.SharkDatabase && typeof window.SharkDatabase.deleteProject === 'function') {
+          await window.SharkDatabase.deleteProject(projectId || projectName);
+        } else {
+          try {
+            const stored = JSON.parse(localStorage.getItem('sharktools_projects') || '[]');
+            const filtered = stored.filter(p => p.id !== projectId && p.name !== projectName);
+            localStorage.setItem('sharktools_projects', JSON.stringify(filtered));
+          } catch (_) {}
+        }
+
+        window.location.href = 'index.html';
+      } catch (err) {
+        console.error('[Editor] Failed to delete project:', err);
+        alert('Failed to delete project: ' + (err && err.message ? err.message : err));
+      }
+    }
+
+    // Expose Project Settings & Delete actions globally for modal buttons
+    window.openProjectSettingsModal = openProjectSettingsModal;
+    window.saveProjectSettingsAction = saveProjectSettingsAction;
+    window.deleteProjectFromEditorAction = deleteProjectFromEditorAction;
 
     // ── Debug State Helper: Multi-Layer Fetch & Duration Analysis ──────────────
     window.getSelectedLayerDebugState = function() {

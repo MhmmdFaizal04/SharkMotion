@@ -2116,6 +2116,38 @@
   transform: scale(0.98);
 }
 
+.modal-btn-danger-outline {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1px solid rgba(255, 69, 58, 0.45);
+  font-family: var(--font-brand);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.modal-btn-danger-outline:hover {
+  background-color: rgba(255, 69, 58, 0.12);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.modal-btn-danger-outline:active {
+  transform: scale(0.97);
+  background-color: var(--color-danger);
+  color: #fff;
+}
+
 .modal-btn-cancel-full {
   width: 100%;
   height: 42px;

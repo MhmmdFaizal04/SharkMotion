@@ -21,9 +21,12 @@ window.SharkDatabase = (function () {
       var _parsedDeleted = JSON.parse(_storedDeleted);
       if (Array.isArray(_parsedDeleted)) {
         _parsedDeleted.forEach(function (delId) {
-          if (delId) {
+          if (delId !== undefined && delId !== null && delId !== '') {
             _deletedIds.add(delId);
             _deletedIds.add(String(delId).trim());
+            _deletedIds.add(String(delId));
+            var num = Number(delId);
+            if (!isNaN(num)) _deletedIds.add(num);
           }
         });
       }
@@ -34,6 +37,19 @@ window.SharkDatabase = (function () {
     try {
       localStorage.setItem(DELETED_IDS_KEY, JSON.stringify(Array.from(_deletedIds)));
     } catch (_) {}
+  }
+
+  function isProjectDeleted(p) {
+    if (!p) return true;
+    var pid = p.id;
+    if (pid === undefined || pid === null || pid === '') return true;
+    var strId = String(pid).trim();
+    if (strId.startsWith('prj-00')) return true;
+    if (_deletedIds.has(pid) || _deletedIds.has(strId) || _deletedIds.has(String(pid))) return true;
+    var num = Number(strId);
+    if (!isNaN(num) && _deletedIds.has(num)) return true;
+    if (p.name && (_deletedIds.has(p.name) || _deletedIds.has(String(p.name).trim()))) return true;
+    return false;
   }
 
   function getDefaultSettings() {
@@ -55,7 +71,18 @@ window.SharkDatabase = (function () {
   }
 
   function openDB() {
-    if (dbPromise) return dbPromise;
+    if (dbPromise) {
+      return dbPromise.then(function (db) {
+        if (db && db.readyState === 'closed') {
+          dbPromise = null;
+          return openDB();
+        }
+        return db;
+      }).catch(function () {
+        dbPromise = null;
+        return null;
+      });
+    }
     dbPromise = new Promise(function (resolve) {
       if (!window.indexedDB) {
         resolve(null);
@@ -71,6 +98,7 @@ window.SharkDatabase = (function () {
       // Safety timeout: Never hang app if indexedDB is blocked or stalled
       var safetyTimer = setTimeout(function () {
         console.warn('SharkDatabase openDB timeout, falling back to localStorage');
+        dbPromise = null;
         done(null);
       }, 1500);
 
@@ -102,21 +130,28 @@ window.SharkDatabase = (function () {
           var db = e.target.result;
           db.onversionchange = function () {
             try { db.close(); } catch (_) {}
+            dbPromise = null;
+          };
+          db.onclose = function () {
+            dbPromise = null;
           };
           done(db);
         };
         req.onerror = function (e) {
           clearTimeout(safetyTimer);
+          dbPromise = null;
           console.warn('SharkDatabase IndexedDB open error, using localStorage fallback:', e);
           done(null);
         };
         req.onblocked = function (e) {
           clearTimeout(safetyTimer);
+          dbPromise = null;
           console.warn('SharkDatabase open blocked by another connection, using localStorage fallback');
           done(null);
         };
       } catch (err) {
         clearTimeout(safetyTimer);
+        dbPromise = null;
         done(null);
       }
     });
@@ -287,7 +322,7 @@ window.SharkDatabase = (function () {
       }
       var localList = getLocalProjects();
       var filtered = localList.filter(function (p) {
-        return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+        return p && !isProjectDeleted(p);
       });
       saveLocalProjects(filtered);
     } catch (_) {}
@@ -301,7 +336,7 @@ window.SharkDatabase = (function () {
         req.onsuccess = function () {
           var all = req.result || [];
           all.forEach(function (p) {
-            if (p && p.id && (p.id.startsWith('prj-00') || _deletedIds.has(p.id) || _deletedIds.has(String(p.id).trim()))) {
+            if (p && isProjectDeleted(p)) {
               try { store.delete(p.id); } catch (_) {}
             }
           });
@@ -441,7 +476,7 @@ window.SharkDatabase = (function () {
       return new Promise(function (resolve) {
         var safetyTimer = setTimeout(function () {
           var local = getLocalProjects().filter(function (p) {
-            return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+            return p && !isProjectDeleted(p);
           });
           resolve(local.map(_projectToListMeta));
         }, 1500);
@@ -455,7 +490,7 @@ window.SharkDatabase = (function () {
             var items = req.result || [];
             // Filter out any stale prj-00 mock items and deleted projects
             items = items.filter(function (p) {
-              return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+              return p && !isProjectDeleted(p);
             });
             // Sort latest updated first
             items.sort(function (a, b) {
@@ -471,21 +506,21 @@ window.SharkDatabase = (function () {
           req.onerror = function () {
             clearTimeout(safetyTimer);
             var local = getLocalProjects().filter(function (p) {
-              return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+              return p && !isProjectDeleted(p);
             });
             resolve(local.map(_projectToListMeta));
           };
         } catch (e) {
           clearTimeout(safetyTimer);
           var local = getLocalProjects().filter(function (p) {
-            return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+            return p && !isProjectDeleted(p);
           });
           resolve(local.map(_projectToListMeta));
         }
       });
     }
     var local = getLocalProjects().filter(function (p) {
-      return p && p.id && !p.id.startsWith('prj-00') && !_deletedIds.has(p.id) && !_deletedIds.has(String(p.id).trim());
+      return p && !isProjectDeleted(p);
     });
     return local.map(_projectToListMeta);
   }
@@ -496,12 +531,12 @@ window.SharkDatabase = (function () {
    * @returns {Promise<Object|null>}
    */
   async function getProject(id) {
-    if (!id || _deletedIds.has(id) || _deletedIds.has(String(id).trim())) return null;
+    if (!id || isProjectDeleted({ id: id })) return null;
     var db = await openDB();
     if (db) {
       return new Promise(function (resolve) {
         var safetyTimer = setTimeout(function () {
-          var found = getLocalProjects().find(function (p) { return p.id === id; });
+          var found = getLocalProjects().find(function (p) { return p.id === id && !isProjectDeleted(p); });
           resolve(found || null);
         }, 1500);
 
@@ -511,14 +546,18 @@ window.SharkDatabase = (function () {
           var req = store.get(id);
           req.onsuccess = function () {
             clearTimeout(safetyTimer);
-            if (_deletedIds.has(id) || _deletedIds.has(String(id).trim())) {
+            if (isProjectDeleted({ id: id })) {
               resolve(null);
               return;
             }
             if (req.result) {
-              resolve(stripDeadBlobUrls(req.result));
+              if (isProjectDeleted(req.result)) {
+                resolve(null);
+              } else {
+                resolve(stripDeadBlobUrls(req.result));
+              }
             } else {
-              var found = getLocalProjects().find(function (p) { return p.id === id; });
+              var found = getLocalProjects().find(function (p) { return p.id === id && !isProjectDeleted(p); });
               resolve(stripDeadBlobUrls(found) || null);
             }
           };
@@ -1593,14 +1632,39 @@ window.SharkDatabase = (function () {
   async function deleteProject(id) {
     if (!id) return false;
     var targetId = String(id).trim();
+    var matchedIds = new Set([id, targetId]);
+
     _deletedIds.add(id);
     _deletedIds.add(targetId);
+
+    // Also find any project with matching name or id in local copy and add all their IDs to _deletedIds
+    var list = getLocalProjects();
+    list.forEach(function (p) {
+      if (p) {
+        if (p.id === id || String(p.id).trim() === targetId || String(p.id) === String(id)) {
+          matchedIds.add(p.id);
+          matchedIds.add(String(p.id).trim());
+          _deletedIds.add(p.id);
+          _deletedIds.add(String(p.id).trim());
+        }
+        if (p.name && (p.name === id || p.name === targetId)) {
+          if (p.id) {
+            matchedIds.add(p.id);
+            matchedIds.add(String(p.id).trim());
+            _deletedIds.add(p.id);
+            _deletedIds.add(String(p.id).trim());
+          }
+        }
+      }
+    });
     _saveDeletedIds();
 
     // 1. Immediately remove from localStorage for instant UI response
-    var list = getLocalProjects();
     var filtered = list.filter(function (p) {
-      return p && p.id !== id && String(p.id).trim() !== targetId;
+      if (!p) return false;
+      if (matchedIds.has(p.id) || matchedIds.has(String(p.id).trim()) || isProjectDeleted(p)) return false;
+      if (p.name && (matchedIds.has(p.name) || p.name === targetId)) return false;
+      return true;
     });
     saveLocalProjects(filtered);
 
@@ -1609,7 +1673,7 @@ window.SharkDatabase = (function () {
       var emergencyRaw = localStorage.getItem('sharktool_emergency_layers');
       if (emergencyRaw) {
         var emergencyParsed = JSON.parse(emergencyRaw);
-        if (emergencyParsed && (emergencyParsed.projectId === id || emergencyParsed.projectId === targetId)) {
+        if (emergencyParsed && (matchedIds.has(emergencyParsed.projectId) || emergencyParsed.projectId === id || emergencyParsed.projectId === targetId)) {
           localStorage.removeItem('sharktool_emergency_layers');
         }
       }
@@ -1637,7 +1701,7 @@ window.SharkDatabase = (function () {
       });
     }
 
-    // 2. Remove from IndexedDB directly and cleanly without cursor conflict
+    // 2. Remove from IndexedDB directly and cleanly (both direct key delete & cursor sweep)
     try {
       var db = await openDB();
       if (db && db.objectStoreNames.contains('projects')) {
@@ -1647,17 +1711,31 @@ window.SharkDatabase = (function () {
             var tx = db.transaction('projects', 'readwrite');
             var store = tx.objectStore('projects');
 
-            // Direct delete by id and targetId
-            try { store.delete(id); } catch (_) {}
-            if (targetId !== id) {
-              try { store.delete(targetId); } catch (_) {}
-            }
+            // Direct delete by all matched IDs
+            matchedIds.forEach(function (mId) {
+              try { store.delete(mId); } catch (_) {}
+              var num = Number(mId);
+              if (!isNaN(num)) {
+                try { store.delete(num); } catch (_) {}
+              }
+            });
 
-            // Also delete if numeric key
-            var numId = Number(targetId);
-            if (!isNaN(numId)) {
-              try { store.delete(numId); } catch (_) {}
-            }
+            // Robust cursor sweep: delete any record matching id OR name
+            try {
+              var cursorReq = store.openCursor();
+              cursorReq.onsuccess = function (ce) {
+                var cursor = ce.target.result;
+                if (cursor) {
+                  var val = cursor.value;
+                  if (val) {
+                    if (matchedIds.has(val.id) || matchedIds.has(String(val.id).trim()) || (val.name && (matchedIds.has(val.name) || val.name === targetId))) {
+                      try { cursor.delete(); } catch (_) {}
+                    }
+                  }
+                  cursor.continue();
+                }
+              };
+            } catch (_) {}
 
             tx.oncomplete = function () {
               clearTimeout(safetyTimer);
@@ -1686,10 +1764,14 @@ window.SharkDatabase = (function () {
     } catch (_) {}
 
     // 3. Cascade delete all media and frame caches in background
-    Promise.allSettled([
-      deleteProjectMedia(id),
-      sourceKeys.length > 0 ? deleteProjectFrameCaches(sourceKeys) : Promise.resolve()
-    ]).catch(function (_) {});
+    var mediaPromises = [];
+    matchedIds.forEach(function (mId) {
+      mediaPromises.push(deleteProjectMedia(mId));
+    });
+    if (sourceKeys.length > 0) {
+      mediaPromises.push(deleteProjectFrameCaches(sourceKeys));
+    }
+    Promise.allSettled(mediaPromises).catch(function (_) {});
 
     return true;
   }

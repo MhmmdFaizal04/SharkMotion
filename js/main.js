@@ -236,6 +236,21 @@ async function initProjectsFetcher() {
     }
   });
 
+  // Keyboard Delete / Backspace key shortcut on selected project card
+  listContainer.addEventListener('keydown', (e) => {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      const activeEl = document.activeElement;
+      const item = (activeEl && activeEl.closest) ? activeEl.closest('.project-item') : null;
+      if (item) {
+        e.preventDefault();
+        e.stopPropagation();
+        const pId = item.dataset.id;
+        const pName = item.querySelector('.project-name')?.textContent || 'Project';
+        openDeleteModal(pId, pName);
+      }
+    }
+  });
+
   // Attach Right-Click & Press-Hold ContextMenu
   if (window.ContextMenu && typeof window.ContextMenu.bindTrigger === 'function') {
     window.ContextMenu.bindTrigger(listContainer, '.project-item', (target) => {
@@ -857,19 +872,35 @@ async function saveRenameProjectAction() {
 /**
  * Opens the Delete Project Confirmation Modal
  */
+let activeDeleteProjectId = null;
+
+/**
+ * Opens the Delete Project Confirmation Modal
+ */
 function openDeleteModal(projectId, currentName) {
+  activeDeleteProjectId = projectId || null;
   const modal = document.getElementById('modal-delete-project');
   const idInput = document.getElementById('delete-project-id');
   const targetNameEl = document.getElementById('delete-target-name');
   const promptEl = document.getElementById('delete-project-prompt');
-  if (!modal || !idInput) return;
 
-  idInput.value = projectId || '';
-  const displayName = `"${currentName || 'Untitled'}"`;
+  if (idInput) {
+    idInput.value = projectId || '';
+  }
+
+  const cleanName = currentName || 'Untitled Project';
+  const displayName = `"${cleanName}"`;
   if (targetNameEl) {
     targetNameEl.textContent = displayName;
-  } else if (promptEl) {
-    promptEl.textContent = `Delete project ${displayName}?`;
+  }
+  if (promptEl) {
+    promptEl.innerHTML = `Delete project <strong>${escapeHtml(displayName)}</strong>?`;
+  }
+
+  // Close project settings modal if it was open so dialogs don't clash
+  const settingsModal = document.getElementById('modal-project-settings');
+  if (settingsModal && settingsModal.classList.contains('is-active')) {
+    settingsModal.classList.remove('is-active');
   }
 
   if (window.Modal) {
@@ -882,39 +913,53 @@ function openDeleteModal(projectId, currentName) {
  */
 async function confirmDeleteProjectAction() {
   const idInput = document.getElementById('delete-project-id');
-  let projectId = idInput ? idInput.value : '';
+  const targetNameEl = document.getElementById('delete-target-name');
+  let projectId = (idInput && idInput.value) ? idInput.value.trim() : '';
+  const rawName = targetNameEl ? targetNameEl.textContent.replace(/^["'\u201C\u201D]|["'\u201C\u201D]$/g, '').trim() : '';
 
+  // Close modal immediately without triggering history.back to prevent unwanted browser navigation
   if (window.Modal) {
-    window.Modal.close('modal-delete-project');
+    window.Modal.close(false);
   }
 
-  // Immediately remove card from DOM for instant feedback
   const listContainer = document.getElementById('projects-container');
   const countBadge = document.getElementById('project-count-badge');
 
-  // Fallback: If projectId was empty, match by target name or single remaining card
-  if (!projectId) {
-    const targetNameEl = document.getElementById('delete-target-name');
-    const rawName = targetNameEl ? targetNameEl.textContent.replace(/^"|"$/g, '').trim() : '';
-    if (rawName && window.SharkDatabase) {
-      try {
-        const all = await window.SharkDatabase.getProjects();
-        const found = all.find(p => p && (p.name === rawName || p.id === rawName));
-        if (found) projectId = found.id;
-      } catch (_) {}
-    }
-    if (!projectId && listContainer) {
-      const cards = listContainer.querySelectorAll('.project-swipe-container');
-      if (cards.length === 1 && cards[0].dataset.id) {
-        projectId = cards[0].dataset.id;
-      }
+  // Fallback: Check activeDeleteProjectId
+  if (!projectId && activeDeleteProjectId) {
+    projectId = activeDeleteProjectId;
+  }
+
+  // Fallback: If still empty, match by target name from database
+  if (!projectId && rawName && window.SharkDatabase) {
+    try {
+      const all = await window.SharkDatabase.getProjects();
+      const found = all.find(p => p && (p.name === rawName || p.id === rawName));
+      if (found) projectId = found.id;
+    } catch (_) {}
+  }
+
+  // Fallback: Single remaining card on screen
+  if (!projectId && listContainer) {
+    const cards = listContainer.querySelectorAll('.project-swipe-container');
+    if (cards.length === 1 && cards[0].dataset.id) {
+      projectId = cards[0].dataset.id;
     }
   }
 
-  if (listContainer && projectId) {
+  const targetIdentifier = projectId || rawName;
+
+  // Immediately purge card from DOM for zero-latency user feedback
+  if (listContainer) {
     const cards = listContainer.querySelectorAll('.project-swipe-container');
     cards.forEach(card => {
-      if (card.dataset.id === projectId || card.dataset.name === projectId) {
+      const cardId = card.dataset.id;
+      const cardName = card.dataset.name;
+      if (
+        (projectId && (cardId === projectId || String(cardId).trim() === String(projectId).trim())) ||
+        (rawName && (cardName === rawName || String(cardName).trim() === String(rawName).trim())) ||
+        (targetIdentifier && (cardId === targetIdentifier || cardName === targetIdentifier))
+      ) {
         card.remove();
       }
     });
@@ -925,9 +970,13 @@ async function confirmDeleteProjectAction() {
     }
   }
 
-  if (projectId && window.SharkDatabase) {
+  // Execute persistent deletion from database
+  if (targetIdentifier && window.SharkDatabase) {
     try {
-      await window.SharkDatabase.deleteProject(projectId);
+      await window.SharkDatabase.deleteProject(targetIdentifier);
+      if (rawName && rawName !== targetIdentifier) {
+        await window.SharkDatabase.deleteProject(rawName);
+      }
       showDashboardToast('Project deleted successfully');
     } catch (e) {
       console.warn('Delete project error:', e);
@@ -935,16 +984,32 @@ async function confirmDeleteProjectAction() {
     }
   }
 
-  // Refresh project list from database
+  // Refresh project list from database, ensuring deleted project is strictly excluded
   if (listContainer && window.SharkDatabase) {
     try {
       let projects = await window.SharkDatabase.getProjects();
-      if (projectId) {
-        projects = projects.filter(p => p && p.id !== projectId && String(p.id).trim() !== String(projectId).trim());
-      }
+      projects = projects.filter(p => {
+        if (!p) return false;
+        if (projectId && (p.id === projectId || String(p.id).trim() === String(projectId).trim())) return false;
+        if (rawName && p.name === rawName) return false;
+        return true;
+      });
       renderProjects(projects, listContainer, countBadge);
     } catch (_) {}
   }
+
+  activeDeleteProjectId = null;
+}
+
+/**
+ * Triggers delete flow directly from the Project Settings modal
+ */
+function deleteCurrentProjectFromSettings() {
+  const idInput = document.getElementById('settings-project-id');
+  const nameInput = document.getElementById('settings-input-name');
+  const pId = idInput ? idInput.value : '';
+  const pName = nameInput ? nameInput.value : 'Project';
+  openDeleteModal(pId, pName);
 }
 
 /**
@@ -1337,6 +1402,7 @@ window.openRenameModal = openRenameModal;
 window.saveRenameProjectAction = saveRenameProjectAction;
 window.openProjectSettingsModal = openProjectSettingsModal;
 window.saveProjectSettingsAction = saveProjectSettingsAction;
+window.deleteCurrentProjectFromSettings = deleteCurrentProjectFromSettings;
 window.syncWelcomeVersionTags = syncWelcomeVersionTags;
 window.createNewProjectAction = createNewProjectAction;
 window.closeWelcomeModal = closeWelcomeModal;
