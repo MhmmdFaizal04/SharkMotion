@@ -380,11 +380,6 @@ function renderProjects(projects, container, countBadge) {
           </div>
           <div class="project-item-right">
             <span class="project-size" data-project-size-id="${escapeHtml(project.id)}">${escapeHtml(size)}</span>
-            <button type="button" class="project-card-delete-btn" data-id="${escapeHtml(project.id)}" data-name="${escapeHtml(name)}" title="Delete project" aria-label="Delete project">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-              </svg>
-            </button>
             <button type="button" class="project-card-menu-btn" data-id="${escapeHtml(project.id)}" title="More options" aria-label="More options">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
@@ -397,19 +392,6 @@ function renderProjects(projects, container, countBadge) {
   }).join('');
 
   bindProjectSwipeGestures(container);
-
-  // Bind direct card delete button
-  container.querySelectorAll('.project-card-delete-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const pId = btn.dataset.id;
-      const pName = btn.dataset.name || 'Project';
-      const confirmed = window.confirm(`Are you sure you want to permanently delete "${pName}"?\n\nThis action cannot be undone.`);
-      if (!confirmed) return;
-      await executePermanentProjectDeletion(pId, pName);
-    });
-  });
 
   // Bind 3-dot context menu trigger on cards
   container.querySelectorAll('.project-card-menu-btn').forEach(btn => {

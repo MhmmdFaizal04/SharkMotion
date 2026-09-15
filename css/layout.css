@@ -848,24 +848,6 @@ html, body {
   background: var(--bg-panel);
 }
 
-.project-card-delete-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.project-card-delete-btn:hover {
-  color: var(--color-danger, #ff4d4f);
-  background: rgba(255, 77, 79, 0.12);
-}
-
 /* Background Reveal Swipe Actions */
 .project-swipe-action {
   position: absolute;
