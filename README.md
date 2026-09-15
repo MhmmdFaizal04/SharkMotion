@@ -4,18 +4,19 @@
 
 # Alight Motion Web — SharkMotion
 
-**Studio Motion Design & Video Editor "Jedag-Jedug" Berbasis Web Modern, Cepat, dan Gratis.**
+**Studio Motion Design & Video Editor "Jedag-Jedug" Berbasis Web Modern, Cepat, dan 100% Gratis.**
 
-[![Status](https://img.shields.io/badge/Status-Active%20Development-00f0ff?style=for-the-badge&logo=git&logoColor=white)](https://github.com/MhmmdFaizal04/SharkMotion)
-[![Platform](https://img.shields.io/badge/Platform-Web%20Browser-0a1f38?style=for-the-badge&logo=googlechrome&logoColor=00f0ff)](https://github.com/MhmmdFaizal04/SharkMotion)
-[![Engine](https://img.shields.io/badge/Render%20Engine-Canvas%202D%20%7C%20WebAudio-00d2ff?style=for-the-badge&logo=html5&logoColor=white)](https://github.com/MhmmdFaizal04/SharkMotion)
-[![Export](https://img.shields.io/badge/Export-FFmpeg.wasm%20(MP4)-0284c7?style=for-the-badge&logo=webassembly&logoColor=white)](https://github.com/MhmmdFaizal04/SharkMotion)
-[![Deploy](https://img.shields.io/badge/Deploy-Vercel%20Ready-black?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
-[![License](https://img.shields.io/badge/License-MIT-00f0ff?style=for-the-badge)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/MhmmdFaizal04/SharkMotion?style=for-the-badge&logo=github&color=ffd700&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/MhmmdFaizal04/SharkMotion?style=for-the-badge&logo=github&color=00d2ff&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion/network/members)
+[![Status](https://img.shields.io/badge/Status-Active%20Development-00f0ff?style=for-the-badge&logo=git&logoColor=white&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion)
+[![Platform](https://img.shields.io/badge/Platform-Web%20Browser-0a1f38?style=for-the-badge&logo=googlechrome&logoColor=00f0ff&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion)
+[![Engine](https://img.shields.io/badge/Render%20Engine-Canvas%202D%20%7C%20WebAudio-00d2ff?style=for-the-badge&logo=html5&logoColor=white&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion)
+[![Export](https://img.shields.io/badge/Export-FFmpeg.wasm%20(MP4)-0284c7?style=for-the-badge&logo=webassembly&logoColor=white&labelColor=040a14)](https://github.com/MhmmdFaizal04/SharkMotion)
+[![License](https://img.shields.io/badge/License-MIT-00f0ff?style=for-the-badge&labelColor=040a14)](LICENSE)
 
 <br/>
 
-[🚀 Coba SharkMotion](#-cara-menjalankan-secara-lokal) • [✨ Fitur Utama](#-fitur-utama) • [⚡ Tutorial Jedag-Jedug](#-panduan-spesial-cara-membuat-video-jedag-jedug-jj-di-sharkmotion) • [⌨️ Shortcut](#%EF%B8%8F-daftar-shortcut-keyboard) • [🌐 Deploy ke Vercel](#-deploy-ke-vercel)
+[🚀 Coba SharkMotion](#-cara-menjalankan-secara-lokal) • [✨ Fitur Utama](#-fitur-utama) • [⚡ Tutorial Jedag-Jedug](#-panduan-spesial-cara-membuat-video-jedag-jedug-jj-di-sharkmotion) • [⌨️ Shortcut](#%EF%B8%8F-daftar-shortcut-keyboard) • [⭐ Dukung Proyek (Star & Fork)](#-dukung-proyek-ini-star--fork) • [🗺️ Roadmap](#%EF%B8%8F-roadmap-pengembangan)
 
 </div>
 
@@ -23,9 +24,17 @@
 
 ## 📖 Tentang SharkMotion
 
-**SharkMotion** adalah aplikasi motion graphics dan video editing web canggih yang dirancang sebagai alternatif **Alight Motion versi Web**. SharkMotion memungkinkan kreator konten, motion graphic artist, dan editor AM/TikTok untuk membuat animasi kurva halus, efek transisi dinamis, serta video **Jedag-Jedug (JJ)** langsung dari browser desktop tanpa perlu mengunduh emulator Android atau software berat.
+> 🌟 **Suka dengan proyek SharkMotion? Dukung kami dengan memberikan Star ⭐ dan Fork 🍴 di GitHub!**  
+> Bantuan star dan fork dari Anda sangat berarti untuk mendukung keberlanjutan pengembangan fitur baru, meningkatkan visibilitas di komunitas editor, dan membantu sesama kreator menemukan tools motion design tanpa emulator ini!
 
-Semua proses editing dan rendering berlangsung 100% secara lokal di browser Anda (*Client-Side Rendering* dengan Canvas 2D + Web Audio API + FFmpeg.wasm), menjamin privasi video tetap aman di perangkat Anda.
+**SharkMotion** adalah studio motion graphics dan video editing web canggih yang dirancang khusus sebagai solusi **Alight Motion versi Web**. SharkMotion memungkinkan para kreator konten, motion graphic artist, dan editor AM / TikTok untuk merancang animasi kurva halus, efek transisi dinamis, serta video **Jedag-Jedug (JJ)** langsung dari browser desktop tanpa perlu memasang emulator Android yang berat.
+
+Seluruh proses editing dan rendering berlangsung 100% secara lokal di browser Anda (*Client-Side Rendering* dengan Canvas 2D + Web Audio API + FFmpeg.wasm), menjamin privasi dan keamanan aset video Anda tetap terjaga tanpa diunggah ke server pihak ketiga.
+
+---
+
+### 🏷️ Topik & Tag Populer
+`#alightmotion` • `#alightmotionweb` • `#motiongraphics` • `#videoeditor` • `#jedagjedug` • `#jedagjedugalightmotion` • `#ameditor` • `#keyframes` • `#beziercurves` • `#ffmpegwasm` • `#canvas2d` • `#webaudio` • `#browsereditor` • `#tiktokviral` • `#ampreset` • `#editingvideo` • `#webvideoeditor`
 
 ---
 
@@ -54,29 +63,29 @@ Semua proses editing dan rendering berlangsung 100% secara lokal di browser Anda
 
 ## 🛠️ Cara Menjalankan Secara Lokal
 
-SharkMotion adalah proyek web *zero-dependency* murni (HTML5, CSS3, Vanilla ES6+). Anda dapat langsung menjalankannya:
+SharkMotion adalah proyek web *zero-dependency* murni (HTML5, CSS3, Vanilla ES6+). Anda dapat langsung menjalankannya di komputer Anda:
 
 ### Opsi 1: Menggunakan Live Server / Local Web Server (Direkomendasikan)
 Untuk performa optimal rendering FFmpeg WASM dan Web Worker:
 
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone https://github.com/MhmmdFaizal04/SharkMotion.git
 
-# Masuk ke folder proyek
+# 2. Masuk ke folder proyek
 cd SharkMotion
 
-# Jalankan server lokal sederhana (pilih salah satu):
+# 3. Jalankan server lokal sederhana (pilih salah satu):
 # Menggunakan Node.js npx serve:
 npx serve .
 
 # Atau menggunakan Python 3:
 python -m http.server 3000
 ```
-Buka browser dan akses `http://localhost:3000`.
+Buka browser dan kunjungi `http://localhost:3000`.
 
 ### Opsi 2: Buka Langsung File HTML
-Buka file `index.html` (Landing Page) atau `editor.html` (Studio Editor) langsung di browser pilihan Anda (Google Chrome, Microsoft Edge, Brave, dsb).
+Anda juga dapat membuka file `index.html` (Landing Page) atau `editor.html` (Studio Editor) langsung di browser pilihan Anda (Google Chrome, Microsoft Edge, Brave, dsb).
 
 ---
 
@@ -181,7 +190,6 @@ SharkMotion/
 ├── index.html                  # Halaman Utama / Landing Page
 ├── editor.html                 # Workspace Studio Video Editor Utama
 ├── version.json                # Data Versi & Build Metadata
-├── vercel.json                 # Konfigurasi Deployment Vercel & Header COOP/COEP
 ├── CHANGELOG.md                # Riwayat Pembaruan & Fitur
 ├── assets/                     # Ikon, Favicon, dan Logo Resmi SharkMotion
 │   ├── icon.svg                # Logo Squircle Shark Cyan
@@ -209,37 +217,64 @@ SharkMotion/
 
 ---
 
-## 🌐 Deploy ke Vercel
+## ⭐ Dukung Proyek Ini (Star & Fork)
 
-SharkMotion sudah dilengkapi file konfigurasi `vercel.json` dengan header keamanan yang diperlukan untuk multi-threading WebAssembly (`Cross-Origin-Opener-Policy: same-origin` dan `Cross-Origin-Embedder-Policy: require-corp`).
+Jika SharkMotion membantu atau menginspirasi proses editing dan karya kreatif Anda, berikan apresiasi dengan:
 
-### Deploy Lewat Vercel CLI:
-```bash
-npm i -g vercel
-vercel
-```
+1. **Memberikan Star (⭐)** di pojok kanan atas halaman repository ini agar semakin banyak kreator konten yang mengetahui keberadaan Alight Motion versi web ini.
+2. **Melakukan Fork (🍴)** untuk bereksperimen, menambahkan efek baru, atau membuat variasi tema Anda sendiri.
+3. **Membagikan (📢)** hasil karya video jedag-jedug Anda di TikTok, YouTube, atau Instagram dengan menyertakan tagar `#SharkMotion`.
 
-### Deploy Lewat GitHub:
-1. Hubungkan repository ini ke dashboard akun [Vercel](https://vercel.com).
-2. Pilih **Framework Preset**: `Other` (Root Directory: `./`).
-3. Klik **Deploy** — website SharkMotion Anda akan langsung aktif secara global dalam hitungan detik!
+<div align="center">
+  <a href="https://github.com/MhmmdFaizal04/SharkMotion/stargazers">
+    <img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-SharkMotion-ffd700?style=for-the-badge&logo=github" alt="Star SharkMotion" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/MhmmdFaizal04/SharkMotion/network/members">
+    <img src="https://img.shields.io/badge/🍴%20Fork%20Project-SharkMotion-00d2ff?style=for-the-badge&logo=github" alt="Fork SharkMotion" />
+  </a>
+</div>
+
+---
+
+## 🗺️ Roadmap Pengembangan
+
+Berikut adalah target pengembangan fitur SharkMotion mendatang:
+
+- [x] Timeline Multi-track presisi dengan zoom & snap
+- [x] Sistem Keyframe dinamis & Bezier Graph Editor (AM Style)
+- [x] SharkTools Quick Suite (Cut Split, Anchor Point Snap, Layer Align)
+- [x] Audio Waveform, Beat Markers, dan Audio Visualizer
+- [x] Render & Export Video MP4 (H.264 FFmpeg.wasm 60 FPS)
+- [ ] **Import & Export Preset XML Alight Motion**: Dukungan langsung membaca format proyek AM `.xml`
+- [ ] **3D Transform & Camera Pan**: Rotasi kubus 3D dan simulasi kamera sinematik
+- [ ] **Audio Spectrum Bar Generator**: Efek spektrum musik visualizer ala musik beat box / bass boosted
+- [ ] **Cloud Community Presets**: Berbagi preset transisi dan efek langsung antar pengguna
+
+---
+
+## 💻 Kompatibilitas Browser & Rekomendasi Sistem
+
+Untuk mendapatkan pengalaman editing yang paling lancar dengan akselerasi perangkat keras:
+- **Browser yang Didukung**: Google Chrome (v90+), Microsoft Edge (v90+), Brave Browser, Opera GX (Disarankan berbasis Chromium).
+- **Akselerasi Perangkat Keras**: Pastikan opsi *"Use hardware acceleration when available"* aktif di pengaturan browser Anda agar pemrosesan efek Canvas dan kompresi video FFmpeg berjalan maksimal.
 
 ---
 
 ## 🤝 Kontribusi
 
-Kontribusi dari komunitas motion design, developer open-source, dan kreator editor video sangat disambut hangat!
-1. Fork repository ini.
-2. Buat branch fitur baru (`git checkout -b fitur/efek-baru`).
-3. Commit perubahan Anda (`git commit -m 'Menambahkan efek transisi baru'`).
-4. Push ke branch Anda (`git push origin fitur/efek-baru`).
-5. Buat Pull Request.
+Kontribusi dari komunitas motion design, pengembang open-source, dan kreator video sangat disambut hangat!
+1. Fork repository ini (`https://github.com/MhmmdFaizal04/SharkMotion/fork`).
+2. Buat branch fitur baru Anda (`git checkout -b fitur/efek-transisi-baru`).
+3. Commit perubahan Anda (`git commit -m 'feat: menambahkan efek transisi baru'`).
+4. Push ke branch Anda (`git push origin fitur/efek-transisi-baru`).
+5. Buka Pull Request di GitHub.
 
 ---
 
 ## 📄 Lisensi
 
-Didistribusikan di bawah lisensi **MIT License**. Lihat file `LICENSE` untuk informasi selengkapnya.
+Didistribusikan di bawah lisensi **MIT License**. Silakan baca file `LICENSE` untuk rincian selengkapnya.
 
 ---
 
