@@ -31,11 +31,11 @@ var UpdateModule = (function () {
             if (majorVersion && majorVersion <= 14) {
                 if (!silent && window.ModalModule) {
                     window.ModalModule.confirm(
-                        "After Effects CC 2017 cannot use the internal update checker due to technical limitations. \n\nWould you like to visit cutefish.my.id manually to check for the latest version?",
-                        "Manual Check Required",
+                        "Visit SharkMotion on GitHub to check for the latest updates and presets?",
+                        "Check for Updates",
                         function (confirmed) {
                             if (confirmed) {
-                                window.csInterface.openURLInDefaultBrowser("https://cutefish.my.id/#fishtoolupdate");
+                                window.csInterface.openURLInDefaultBrowser("https://github.com/MhmmdFaizal04/SharkMotion");
                             }
                         }
                     );

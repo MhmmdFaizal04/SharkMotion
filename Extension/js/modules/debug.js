@@ -40,7 +40,7 @@ window.DebugModule = (function () {
 
         bindClick('btn-test-info-modal', function () {
             if (window.ModalModule) {
-                window.ModalModule.info('System notification: OpenFishTools is up to date and active.', 'Info Test');
+                window.ModalModule.info('System notification: SharkMotion Tools is up to date and active.', 'Info Test');
             }
         });
 

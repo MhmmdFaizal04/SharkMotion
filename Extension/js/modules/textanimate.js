@@ -29,10 +29,10 @@ window.TextAnimateModule = (function () {
         SCALE_POP:    { label:'Scale Pop',    posY: 0,    posX: 0,    scale:[0,0],rotation:null, bounce:true,  freq:3.0, decay:7.0, delay:0.025 },
         TYPEWRITER:   { label:'Typewriter',   posY: 0,    posX: 0,    scale:null, rotation:null, bounce:false, freq:3.0, decay:7.0, delay:0.025, typewriter:true },
         SPIN_IN:      { label:'Spin In',      posY: 0,    posX: 0,    scale:[0,0],rotation:-90,  bounce:false, freq:3.0, decay:7.0, delay:0.025 },
-        CF_1:         { label:'Cutefish 1',   posY: -80,  posX: 0,    scale:[0,0],rotation:null, bounce:true,  freq:3.0, decay:7.0, delay:0.020, tracking:20,  cf: 1 },
-        CF_2:         { label:'Cutefish 2',   posY: 80,   posX: 0,    scale:[0,0],rotation: 90,  bounce:true,  freq:2.0, decay:9.0, delay:0.033, tracking:20,  cf: 2 },
-        CF_3:         { label:'Cutefish 3',   posY: 0,    posX: 0,    scale:[0,0],rotation:-90,  bounce:true,  freq:2.0, decay:8.0, delay:0.060, tracking:20,  cf: 3 },
-        CF_4:         { label:'Cutefish 4',   posY: 0,    posX: 0,    scale:[0,0],rotation:null, bounce:true,  freq:1.0, decay:8.0, delay:0.033,                 cf: 4 }
+        CF_1:         { label:'SharkMotion 1',   posY: -80,  posX: 0,    scale:[0,0],rotation:null, bounce:true,  freq:3.0, decay:7.0, delay:0.020, tracking:20,  cf: 1 },
+        CF_2:         { label:'SharkMotion 2',   posY: 80,   posX: 0,    scale:[0,0],rotation: 90,  bounce:true,  freq:2.0, decay:9.0, delay:0.033, tracking:20,  cf: 2 },
+        CF_3:         { label:'SharkMotion 3',   posY: 0,    posX: 0,    scale:[0,0],rotation:-90,  bounce:true,  freq:2.0, decay:8.0, delay:0.060, tracking:20,  cf: 3 },
+        CF_4:         { label:'SharkMotion 4',   posY: 0,    posX: 0,    scale:[0,0],rotation:null, bounce:true,  freq:1.0, decay:8.0, delay:0.033,                 cf: 4 }
     };
 
     function _esc(str) {

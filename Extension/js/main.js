@@ -146,7 +146,7 @@ function setupDonation() {
     var btnPaypal = document.getElementById('btn-paypal');
     if (btnPaypal) {
         btnPaypal.addEventListener('click', function () {
-            csInterface.openURLInDefaultBrowser("https://www.paypal.com/paypalme/cutefishae");
+            csInterface.openURLInDefaultBrowser("https://github.com/MhmmdFaizal04/SharkMotion");
         });
     }
 
@@ -216,23 +216,13 @@ function setupDonation() {
     var btnReportBug = document.getElementById('btn-report-bug');
     if (btnReportBug) {
         btnReportBug.addEventListener('click', function () {
-            csInterface.openURLInDefaultBrowser('https://www.cutefish.my.id/#contact');
+            csInterface.openURLInDefaultBrowser('https://github.com/MhmmdFaizal04/SharkMotion/issues');
         });
     }
 }
 
 function loadHostScript(callback) {
-    if (!csInterface) { if (callback) callback(); return; }
-    try {
-        var extPath = csInterface.getSystemPath(SystemPath.EXTENSION);
-        var jsxPath = extPath + "/host/index.jsx";
-        csInterface.evalScript('$.evalFile("' + jsxPath.replace(/\\/g, '/') + '")', function () {
-            if (callback) callback();
-        });
-    } catch (e) {
-        console.error("FishTools: Host script load failed", e);
-        if (callback) callback();
-    }
+    if (callback) callback();
 }
 
 window.showTooltip = function (el, text, duration) {
