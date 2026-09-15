@@ -1,0 +1,253 @@
+/* ==========================================================================
+   THEME.CSS - Color Tokens, Theming Variables, and Typography
+   Default Palette: SharkMotion Deep Oceanic
+   bg: #050a12 | surface: #0a1220 | surface2: #0f1a2e | border: #1b2b48 | accent: #00d2ff
+   ========================================================================== */
+
+/* --- Cal Sans Regular / SemiBold Web Font --- */
+@font-face {
+  font-family: 'Cal Sans';
+  src: url('../assets/fonts/CalSans-SemiBold.woff2') format('woff2'),
+       url('../assets/fonts/CalSans-SemiBold.woff') format('woff'),
+       url('../assets/fonts/CalSans-SemiBold.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Global Text Selection & Hidden Scrollbar UI --- */
+*, *::before, *::after {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+*::-webkit-scrollbar-track {
+  display: none !important;
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
+:root {
+  /* --- Brand & Primary Accent Colors (Deep Oceanic: #00d2ff, #0ea5e9) --- */
+  --color-primary: #00d2ff;             /* Electric Oceanic Cyan */
+  --color-primary-hover: #38bdf8;       /* Luminous Sea Sky Blue Hover */
+  --color-primary-active: #0284c7;      /* Deep Pelagic Blue Active */
+  --color-accent: #0ea5e9;              /* Deep Ocean Wave Accent */
+  --color-accent-subtle: #0369a1;       /* Deep Trench Marine Blue */
+  --color-danger: #f43f5e;              /* Vibrant Coral Rose Alert */
+  --color-danger-hover: #e11d48;        /* Deep Coral Hover */
+  --color-danger-bg: rgba(244, 63, 94, 0.15);
+  --color-danger-text: #ffffff;         /* Crisp High-Contrast Text on Danger */
+
+  /* --- Surface & Background Colors (Abyss Ocean & Surfaces) --- */
+  --bg-canvas: #050a12;                 /* Deep Marine Abyss Void (#050a12) */
+  --bg-dashboard: #0a1220;              /* Midnight Trench Surface 1 (#0a1220) */
+  --bg-panel: #0f1a2e;                  /* Elevated Oceanic Panel Surface 2 (#0f1a2e) */
+  --bg-panel-hover: #162542;            /* Panel Hover Background */
+  --bg-panel-active: #0a1220;           /* Panel Active Background */
+  --bg-panel-inner: #0b1424;            /* Inner Item Dark Background */
+  --bg-panel-inner-hover: #172644;      /* Inner Item Hover */
+  
+  /* --- Badge & Tag Colors --- */
+  --badge-prealpha-bg: #0d2038;         /* Deep Oceanic Pill */
+  --badge-prealpha-text: #00d2ff;       /* Electric Cyan Pill Text */
+  --badge-count-bg: #00d2ff;           /* Solid Cyan Fill Badge */
+  --badge-count-text: #050a12;         /* Dark Text on Cyan Badge */
+
+  /* --- Timeline Track Accent Tokens --- */
+  --track-video: #00d2ff;               /* Video Track Vibrant Cyan */
+  --track-video-dark: #0369a1;          /* Video Track Abyss Depth */
+  --track-image: #38bdf8;               /* Image Track Sea Blue */
+  --track-image-dark: #075985;          /* Image Track Dark Shade */
+  --track-audio: #2dd4bf;               /* Audio Track Luminous Aqua Mint */
+  --track-audio-dark: #0f766e;          /* Audio Track Deep Marine Shade */
+  --track-adj: #818cf8;                 /* Adjustment Track Electric Indigo */
+  --track-adj-dark: #4338ca;            /* Adjustment Track Hidden Shade */
+  --track-color: #67e8f9;               /* Color / Solid Track Pale Aqua */
+  --track-color-dark: #155e75;          /* Color Track Hidden Shade */
+  --track-text: #a5f3fc;                /* Text Track Bright Luminous Aqua */
+  --track-text-dark: #0e7490;           /* Text Track Hidden Shade */
+
+  /* --- Tech Grid Overlay Colors --- */
+  --grid-line-thin: rgba(0, 210, 255, 0.12);
+  --grid-line-major: rgba(0, 210, 255, 0.35);
+  --grid-crosshair: #00d2ff;
+  --grid-dot: rgba(0, 210, 255, 0.50);
+
+  /* --- Typography Colors --- */
+  --text-primary: #f0f9ff;              /* Main Crisp White-Blue */
+  --text-secondary: #38bdf8;            /* Vibrant Cyan Secondary Text */
+  --text-muted: #94a3b8;                /* Soft Oceanic Slate Text */
+  --text-dim: #0284c7;                  /* Muted Marine Indicator */
+
+  /* --- Flat & Sleek Styling --- */
+  --border-panel: #1b2b48;              /* Solid Oceanic Panel Border */
+  --border-subtle: rgba(0, 210, 255, 0.18);
+  --border-focus: #00d2ff;
+  --shadow-panel: none;
+  --shadow-button-glow: none;
+  --shadow-active: none;
+
+  /* --- Dedicated Keyframe Theme Tokens --- */
+  --kf-default-bg: #0a1220;            /* Dark surface core */
+  --kf-default-border: #7dd3fc;        /* Soft cyan outline */
+  --kf-active-bg: #00d2ff;             /* Electric cyan solid diamond */
+  --kf-active-border: #050a12;         /* Sharp dark perimeter outline */
+  --kf-selected-bg: #ffffff;           /* Luminous clean white diamond */
+  --kf-selected-border: #050a12;       /* Solid dark border */
+  --kf-selected-dot: #00d2ff;          /* Vibrant cyan center anchor dot */
+
+  /* --- Font Families --- */
+  --font-brand: 'Cal Sans', sans-serif;
+  --font-mono: 'Cal Sans', sans-serif;
+}
+
+/* Optional Alternate Themes (Full 100% token coverage for all windows, containers & components) */
+[data-theme="cyber-cyan"] {
+  /* Brand & Accents */
+  --color-primary: #00e5ff;
+  --color-primary-hover: #5df2ff;
+  --color-primary-active: #00b4c8;
+  --color-accent: #008ba3;
+  --color-accent-subtle: #006b7d;
+  --color-danger: #ff5370;
+  --color-danger-hover: #ff3355;
+  --color-danger-bg: rgba(255, 83, 112, 0.15);
+  --color-danger-text: #ffffff;
+
+  /* Surfaces & Containers */
+  --bg-canvas: #040d14;
+  --bg-dashboard: #0a1e28;
+  --bg-panel: #0c3040;
+  --bg-panel-hover: #104157;
+  --bg-panel-active: #08232f;
+  --bg-panel-inner: #092836;
+  --bg-panel-inner-hover: #144f69;
+
+  /* Badges */
+  --badge-prealpha-bg: #092836;
+  --badge-prealpha-text: #00e5ff;
+  --badge-count-bg: #00e5ff;
+  --badge-count-text: #040d14;
+
+  /* Timeline Track Tokens */
+  --track-video: #00e5ff;
+  --track-video-dark: #006b7d;
+  --track-image: #5df2ff;
+  --track-image-dark: #006b7d;
+  --track-audio: #6ee7b7;
+  --track-audio-dark: #0f766e;
+  --track-adj: #008ba3;
+  --track-adj-dark: #092836;
+  --track-color: #5df2ff;
+  --track-color-dark: #006b7d;
+  --track-text: #67e8f9;
+  --track-text-dark: #155e75;
+
+  /* Grid Overlay */
+  --grid-line-thin: rgba(0, 229, 255, 0.18);
+  --grid-line-major: rgba(0, 229, 255, 0.45);
+  --grid-crosshair: #00e5ff;
+  --grid-dot: rgba(0, 229, 255, 0.55);
+
+  /* Typography */
+  --text-primary: #00e5ff;
+  --text-secondary: #7dd3fc;
+  --text-muted: #008ba3;
+  --text-dim: #005664;
+
+  /* Borders */
+  --border-panel: #144f69;
+  --border-subtle: rgba(0, 229, 255, 0.22);
+  --border-focus: #00e5ff;
+
+  /* Dedicated Keyframe Theme Tokens */
+  --kf-default-bg: #0a1e28;
+  --kf-default-border: #7dd3fc;
+  --kf-active-bg: #00e5ff;
+  --kf-active-border: #040d14;
+  --kf-selected-bg: #ffffff;
+  --kf-selected-border: #040d14;
+  --kf-selected-dot: #00e5ff;
+}
+
+[data-theme="amber-terminal"] {
+  /* Brand & Accents */
+  --color-primary: #ffaa00;
+  --color-primary-hover: #ffc44d;
+  --color-primary-active: #cc8800;
+  --color-accent: #a86c0c;
+  --color-accent-subtle: #805309;
+  --color-danger: #ff5252;
+  --color-danger-hover: #e04848;
+  --color-danger-bg: rgba(255, 82, 82, 0.15);
+  --color-danger-text: #ffffff;
+
+  /* Surfaces & Containers */
+  --bg-canvas: #120b02;
+  --bg-dashboard: #241605;
+  --bg-panel: #38240a;
+  --bg-panel-hover: #4d310e;
+  --bg-panel-active: #291a07;
+  --bg-panel-inner: #2f1e08;
+  --bg-panel-inner-hover: #54360e;
+
+  /* Badges */
+  --badge-prealpha-bg: #2f1e08;
+  --badge-prealpha-text: #ffaa00;
+  --badge-count-bg: #ffaa00;
+  --badge-count-text: #120b02;
+
+  /* Timeline Track Tokens */
+  --track-video: #ffaa00;
+  --track-video-dark: #805309;
+  --track-image: #ffc44d;
+  --track-image-dark: #805309;
+  --track-audio: #fde047;
+  --track-audio-dark: #926d15;
+  --track-adj: #cc8800;
+  --track-adj-dark: #2f1e08;
+  --track-color: #ffc44d;
+  --track-color-dark: #805309;
+  --track-text: #fde047;
+  --track-text-dark: #854d0e;
+
+  /* Grid Overlay */
+  --grid-line-thin: rgba(255, 170, 0, 0.18);
+  --grid-line-major: rgba(255, 170, 0, 0.45);
+  --grid-crosshair: #ffaa00;
+  --grid-dot: rgba(255, 170, 0, 0.55);
+
+  /* Typography */
+  --text-primary: #ffaa00;
+  --text-secondary: #fcd34d;
+  --text-muted: #a86c0c;
+  --text-dim: #613e06;
+
+  /* Borders */
+  --border-panel: #54360e;
+  --border-subtle: rgba(255, 170, 0, 0.22);
+  --border-focus: #ffaa00;
+
+  /* Dedicated Keyframe Theme Tokens */
+  --kf-default-bg: #241605;
+  --kf-default-border: #fcd34d;
+  --kf-active-bg: #ffaa00;
+  --kf-active-border: #120b02;
+  --kf-selected-bg: #ffffff;
+  --kf-selected-border: #120b02;
+  --kf-selected-dot: #ffaa00;
+}

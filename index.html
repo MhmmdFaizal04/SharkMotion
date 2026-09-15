@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SharkMotion Studio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  
+  <!-- Separated CSS: Theme (Colors & Variables, Cal Sans Font), Layout, and Modular Modal -->
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/context-menu.css">
+  <link rel="stylesheet" href="css/safari.css">
+  <script>
+    if (!window.DEBUG && !new URLSearchParams(window.location.search).has('debug') && localStorage.getItem('SHARK_DEBUG') !== 'true') {
+      window._originalConsole = { log: console.log, debug: console.debug, info: console.info };
+      console.log = () => {};
+      console.debug = () => {};
+      console.info = () => {};
+    }
+  </script>
+</head>
+<body oncontextmenu="return false;" onselectstart="return false;">
+
+  <!-- Main Studio App Shell Container: Fullscreen Kinetic Canvas with Floating Cyber Deck -->
+  <main class="app-viewport studio-canvas-layout">
+
+    <!-- Ambient Scattered Editing Canvas (Fullscreen Background Particles with Lowered Opacity) -->
+    <div class="studio-ambient-canvas" aria-hidden="true">
+      <!-- 1. Top-Left Floating Spline with Keyframe Diamonds -->
+      <svg class="ambient-item ambient-spline-top-left" viewBox="0 0 240 100" fill="none">
+        <path d="M 18,65 C 80,25 150,85 220,38" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.32" />
+        <rect class="ambient-kf" x="12" y="59" width="12" height="12" transform="rotate(45 18 65)" fill="#00d2ff" stroke="#050a14" stroke-width="1.5" opacity="0.45" />
+        <rect class="ambient-kf" x="214" y="32" width="12" height="12" transform="rotate(45 220 38)" fill="#00d2ff" stroke="#050a14" stroke-width="1.5" opacity="0.45" />
+      </svg>
+
+      <!-- Comment Bubble 1: Top-Left -->
+      <div class="ambient-bubble ambient-bubble-1">
+        <span class="ambient-bubble-dot"></span>
+        <span>Ini timeline apaan sih</span>
+      </div>
+
+      <!-- Comment Bubble 2: Mid-Left -->
+      <div class="ambient-bubble ambient-bubble-2">
+        <span class="ambient-bubble-dot"></span>
+        <span>Klo ada bug bilang bang jangan diem doang ih</span>
+      </div>
+
+      <!-- 2. Mid-Left Floating Timeline Clip Block with Playhead & Cursor -->
+      <div class="ambient-item ambient-timeline-clip">
+        <svg viewBox="0 0 220 54" fill="none" class="ambient-clip-svg">
+          <!-- Clip Box -->
+          <rect x="2" y="10" width="216" height="38" rx="7" stroke="rgba(0, 210, 255, 0.28)" stroke-width="1.2" fill="rgba(0, 210, 255, 0.04)" />
+          <!-- Inner Waveform Spline -->
+          <path d="M 75,29 Q 90,17 105,29 T 135,29 T 165,29" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.5" stroke-linecap="round" fill="none" />
+          <!-- Playhead Needle -->
+          <polygon points="36,4 46,4 41,11" fill="#00d2ff" opacity="0.65" />
+          <line x1="41" y1="10" x2="41" y2="49" stroke="#00d2ff" stroke-width="1.4" opacity="0.65" stroke-dasharray="3 2" />
+        </svg>
+      </div>
+
+      <!-- Ambient Floating Pointer Cursor -->
+      <svg class="ambient-item ambient-cursor" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M4 2l16 12.2-6.6.7 3.8 8.6-3.2 1.4-3.8-8.6-4.6 4.3L4 2z" fill="#ffffff" opacity="0.4" />
+      </svg>
+
+      <!-- 3. Lower-Left Audio Equalizer Waveform Bars -->
+      <div class="ambient-item ambient-audio-bars">
+        <span style="height: 14px;"></span>
+        <span style="height: 24px;"></span>
+        <span style="height: 18px;"></span>
+        <span style="height: 34px;"></span>
+        <span style="height: 28px;"></span>
+        <span style="height: 42px;"></span>
+        <span style="height: 20px;"></span>
+        <span style="height: 32px;"></span>
+        <span style="height: 16px;"></span>
+        <span style="height: 26px;"></span>
+        <span style="height: 12px;"></span>
+      </div>
+
+      <!-- Ambient Scissors / Razor Cut Icon -->
+      <svg class="ambient-item ambient-scissors" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="6" r="3" />
+        <circle cx="6" cy="18" r="3" />
+        <line x1="20" y1="4" x2="8.12" y2="15.88" />
+        <line x1="14.47" y1="14.48" x2="20" y2="20" />
+        <line x1="8.12" y1="8.12" x2="12" y2="12" />
+      </svg>
+
+      <!-- 4. Lower-Mid Floating Spline & Keyframes -->
+      <svg class="ambient-item ambient-spline-bottom" viewBox="0 0 240 80" fill="none">
+        <path d="M 16,55 C 75,25 140,75 215,35" stroke="#00d2ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.3" />
+        <rect class="ambient-kf" x="10" y="49" width="12" height="12" transform="rotate(45 16 55)" fill="#00d2ff" stroke="#050a14" stroke-width="1.5" opacity="0.4" />
+        <rect class="ambient-kf" x="209" y="29" width="12" height="12" transform="rotate(45 215 35)" fill="#00d2ff" stroke="#050a14" stroke-width="1.5" opacity="0.4" />
+      </svg>
+
+      <!-- Comment Bubble 3: Bottom-Left/Mid -->
+      <div class="ambient-bubble ambient-bubble-3">
+        <span class="ambient-bubble-dot"></span>
+        <span>Masih beta jir ngarep apa</span>
+      </div>
+
+      <!-- 5. Top-Center Sprocket Dots & Free Btw Bubble -->
+      <div class="ambient-item ambient-sprocket-top">
+        <div class="sprocket-row"><span class="sprocket-dot"></span><span class="sprocket-dot"></span><span class="sprocket-dot"></span></div>
+        <div class="sprocket-row"><span class="sprocket-dot"></span><span class="sprocket-dot"></span><span class="sprocket-dot"></span></div>
+      </div>
+      <div class="ambient-bubble ambient-bubble-4">
+        <span class="ambient-bubble-dot"></span>
+        <span>Free btw...</span>
+      </div>
+
+      <!-- 6. Top-Right Ambient Playback Controls -->
+      <div class="ambient-item ambient-playback-controls">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="rgba(0, 210, 255, 0.35)"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="rgba(0, 210, 255, 0.35)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="rgba(0, 210, 255, 0.35)" stroke="none"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="rgba(0, 210, 255, 0.35)"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </div>
+
+      <!-- 7. Film Clapperboard Icons (Far Right & Bottom Center) -->
+      <svg class="ambient-item ambient-clapperboard-right" viewBox="0 0 48 40" width="48" height="40" fill="none" stroke="rgba(0, 210, 255, 0.28)" stroke-width="1.5">
+        <rect x="2" y="2" width="44" height="12" rx="3" />
+        <line x1="12" y1="2" x2="8" y2="14" />
+        <line x1="22" y1="2" x2="18" y2="14" />
+        <line x1="32" y1="2" x2="28" y2="14" />
+        <line x1="42" y1="2" x2="38" y2="14" />
+        <rect x="4" y="14" width="40" height="24" rx="3" />
+      </svg>
+
+      <svg class="ambient-item ambient-clapperboard-bottom" viewBox="0 0 44 36" width="44" height="36" fill="none" stroke="rgba(0, 210, 255, 0.25)" stroke-width="1.5">
+        <rect x="2" y="2" width="40" height="10" rx="3" />
+        <line x1="11" y1="2" x2="7" y2="12" />
+        <line x1="20" y1="2" x2="16" y2="12" />
+        <line x1="29" y1="2" x2="25" y2="12" />
+        <line x1="38" y1="2" x2="34" y2="12" />
+        <rect x="4" y="12" width="36" height="22" rx="3" />
+      </svg>
+
+      <!-- Bottom Sprocket Dots -->
+      <div class="ambient-item ambient-sprocket-bottom">
+        <div class="sprocket-row"><span class="sprocket-dot"></span><span class="sprocket-dot"></span><span class="sprocket-dot"></span></div>
+        <div class="sprocket-row"><span class="sprocket-dot"></span><span class="sprocket-dot"></span><span class="sprocket-dot"></span></div>
+      </div>
+
+      <!-- 8. Scattered Diamond Keyframes Across Viewport -->
+      <div class="ambient-kf-scattered" style="top: 14%; left: 28%;"><span class="ambient-kf-node"></span></div>
+      <div class="ambient-kf-scattered" style="top: 15%; left: 63%;"><span class="ambient-kf-node"></span></div>
+      <div class="ambient-kf-scattered" style="top: 30%; left: 68%;"><span class="ambient-kf-node"></span></div>
+      <div class="ambient-kf-scattered" style="top: 58%; left: 61%;"><span class="ambient-kf-node"></span></div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="studio-top-nav">
+      <div class="brand-wrapper">
+        <div class="brand-identity">
+          <img src="assets/icon.svg" class="brand-logo-icon" alt="SharkMotion Logo" draggable="false">
+          <div class="brand-text">
+            <h1 class="brand-title">SharkMotion</h1>
+            <div class="brand-subtitle-row">
+              <span class="brand-subtitle">Studio</span>
+              <span class="badge-pre-alpha" id="studio-version-badge">0.1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="studio-header-actions">
+        <a href="https://www.sharkmotion.my.id/#contact" target="_blank" rel="noopener noreferrer" class="studio-nav-btn" aria-label="Feedback">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
+          </svg>
+          <span>Feedback</span>
+        </a>
+        <button type="button" class="studio-nav-btn" aria-label="Donate" onclick="Modal.open('modal-donate')">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span>Donate</span>
+        </button>
+        <button type="button" class="studio-nav-btn btn-info-nav" aria-label="Project Info" onclick="Modal.open('modal-welcome')">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Center Kinetic Motion Transform Stage -->
+    <section class="kinetic-motion-core" aria-hidden="true">
+      <!-- Ambient Radial Oceanic Halo -->
+      <div class="core-ambient-glow"></div>
+
+      <!-- Coordinate Transform Grid SVG -->
+      <svg class="core-motion-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 6x6 Coordinate Grid Lines with subtle opacity -->
+        <g stroke="rgba(0, 210, 255, 0.18)" stroke-width="1">
+          <!-- Horizontal Lines -->
+          <line x1="50" y1="90" x2="450" y2="90" />
+          <line x1="50" y1="158" x2="450" y2="158" />
+          <line x1="50" y1="226" x2="450" y2="226" />
+          <line x1="50" y1="294" x2="450" y2="294" />
+          <line x1="50" y1="362" x2="450" y2="362" />
+          <line x1="50" y1="430" x2="450" y2="430" />
+
+          <!-- Vertical Lines -->
+          <line x1="90" y1="50" x2="90" y2="450" />
+          <line x1="158" y1="50" x2="158" y2="450" />
+          <line x1="226" y1="50" x2="226" y2="450" />
+          <line x1="294" y1="50" x2="294" y2="450" />
+          <line x1="362" y1="50" x2="362" y2="450" />
+          <line x1="430" y1="50" x2="430" y2="450" />
+        </g>
+
+        <!-- Coordinate Dot Matrix at Intersections -->
+        <g fill="rgba(0, 210, 255, 0.42)">
+          <circle cx="158" cy="158" r="1.8" />
+          <circle cx="226" cy="158" r="1.8" />
+          <circle cx="294" cy="158" r="1.8" />
+          <circle cx="362" cy="158" r="1.8" />
+          <circle cx="158" cy="226" r="1.8" />
+          <circle cx="362" cy="226" r="1.8" />
+          <circle cx="158" cy="294" r="1.8" />
+          <circle cx="362" cy="294" r="1.8" />
+          <circle cx="158" cy="362" r="1.8" />
+          <circle cx="226" cy="362" r="1.8" />
+          <circle cx="294" cy="362" r="1.8" />
+          <circle cx="362" cy="362" r="1.8" />
+        </g>
+
+        <!-- Outer Crosshairs / Ticks at Grid Edges -->
+        <g stroke="#00d2ff" stroke-width="1.6" opacity="0.75">
+          <!-- Top edge ticks -->
+          <line x1="84" y1="90" x2="96" y2="90" /><line x1="90" y1="84" x2="90" y2="96" />
+          <line x1="424" y1="90" x2="436" y2="90" /><line x1="430" y1="84" x2="430" y2="96" />
+          <!-- Bottom edge ticks -->
+          <line x1="84" y1="430" x2="96" y2="430" /><line x1="90" y1="424" x2="90" y2="436" />
+          <line x1="424" y1="430" x2="436" y2="430" /><line x1="430" y1="424" x2="430" y2="436" />
+          <!-- Mid edge ticks -->
+          <line x1="42" y1="260" x2="58" y2="260" />
+          <line x1="442" y1="260" x2="458" y2="260" />
+          <line x1="260" y1="42" x2="260" y2="58" />
+          <line x1="260" y1="442" x2="260" y2="458" />
+        </g>
+
+        <!-- Transform Bounding Box Container (Around Logo) -->
+        <rect x="160" y="160" width="180" height="180" rx="20" stroke="rgba(0, 210, 255, 0.45)" stroke-width="1.4" stroke-dasharray="6 4" fill="rgba(6, 14, 26, 0.55)" />
+
+        <!-- 8 Transform Anchor Point Handles -->
+        <g fill="#060e1a" stroke="#00d2ff" stroke-width="1.6">
+          <!-- 4 Corner Handles -->
+          <rect x="155" y="155" width="10" height="10" />
+          <rect x="335" y="155" width="10" height="10" />
+          <rect x="155" y="335" width="10" height="10" />
+          <rect x="335" y="335" width="10" height="10" />
+          <!-- 4 Midpoint Handles -->
+          <rect x="245" y="155" width="10" height="10" />
+          <rect x="245" y="335" width="10" height="10" />
+          <rect x="155" y="245" width="10" height="10" />
+          <rect x="335" y="245" width="10" height="10" />
+        </g>
+
+        <!-- Rotation Handle Stem & Pin at Top Midpoint -->
+        <line x1="250" y1="155" x2="250" y2="128" stroke="#00d2ff" stroke-width="1.4" opacity="0.85" />
+        <circle cx="250" cy="128" r="4.5" fill="#060e1a" stroke="#00d2ff" stroke-width="1.6" />
+      </svg>
+
+      <!-- Center Glowing SharkMotion Logo (Cleanly Framed) -->
+      <div class="core-logo-container">
+        <img src="assets/icon.svg" class="core-center-logo" alt="SharkMotion Logo" draggable="false">
+      </div>
+    </section>
+
+    <!-- Floating Glassmorphic Studio Deck (Project Hub Console) -->
+    <aside class="studio-deck-container" aria-label="Project Management Console">
+      <!-- Deck Header with Title, Count Badge, and Search -->
+      <div class="deck-header">
+        <div class="deck-title-row">
+          <div class="deck-title-group">
+            <h2 class="deck-title">Project Hub</h2>
+            <span class="project-count-badge" id="project-count-badge">0</span>
+          </div>
+        </div>
+
+        <!-- Search Bar within Deck -->
+        <div class="deck-search-box">
+          <svg class="deck-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input type="search" id="project-search-input" class="deck-search-input" placeholder="Search saved projects..." autocomplete="off" spellcheck="false" aria-label="Search projects">
+          <button type="button" class="deck-search-clear" id="project-search-clear" aria-label="Clear Search" style="display: none;">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons Row (Interactive Hover, Glow & Press animations) -->
+      <div class="deck-action-buttons">
+        <!-- New Project Button with Watermark & Modal Trigger -->
+        <button type="button" class="deck-btn btn-new-project" aria-label="Create New Project" onclick="Modal.open('modal-new-project')">
+          <div class="deck-btn-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+          </div>
+          <span class="deck-btn-label">New Project</span>
+        </button>
+
+        <!-- Import Project Button -->
+        <button type="button" class="deck-btn btn-import-project" aria-label="Import Project" onclick="Modal.open('modal-import-project')">
+          <div class="deck-btn-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+            </svg>
+          </div>
+          <span class="deck-btn-label">Import Project</span>
+        </button>
+      </div>
+
+      <!-- Quick Canvas Ratio Chips -->
+      <div class="deck-quick-ratios" aria-label="Quick Aspect Ratios">
+        <span class="ratio-chips-label">Quick Ratio:</span>
+        <button type="button" class="ratio-chip" onclick="quickCreateWithRatio('16:9')">16:9</button>
+        <button type="button" class="ratio-chip" onclick="quickCreateWithRatio('9:16')">9:16</button>
+        <button type="button" class="ratio-chip" onclick="quickCreateWithRatio('1:1')">1:1</button>
+        <button type="button" class="ratio-chip" onclick="quickCreateWithRatio('4:3')">4:3</button>
+      </div>
+
+      <!-- Scrollable Projects Pool Container -->
+      <section class="deck-projects-pool" aria-label="Projects List">
+        <div class="projects-list-container" id="projects-container"></div>
+      </section>
+    </aside>
+
+  </main>
+
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: NEW PROJECT MODAL
+       - Auto slide from top on mobile, center scale on tablet/desktop
+       - Closeable by clicking empty backdrop or native back button
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-new-project" role="dialog" aria-modal="true" aria-label="New Project Dialog">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <!-- Editable Project Title Header -->
+      <header class="modal-header">
+        <input type="text" id="project-input-name" class="modal-title-input" value="New Project" placeholder="Enter Project Name..." autocomplete="off" spellcheck="false" aria-label="Project Name">
+      </header>
+
+      <div class="modal-body">
+        <!-- 1. Aspect Ratio (Visual Frames) -->
+        <div class="modal-form-group">
+          <label class="modal-label">ASPECT RATIO</label>
+          <div class="modal-aspect-grid" id="options-aspect-ratio">
+            <button type="button" class="aspect-ratio-frame is-selected" data-val="16:9" title="16:9 Landscape">
+              <div class="aspect-frame-box ratio-16-9">
+                <span class="aspect-ratio-text">16:9</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="9:16" title="9:16 Portrait">
+              <div class="aspect-frame-box ratio-9-16">
+                <span class="aspect-ratio-text">9:16</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="1:1" title="1:1 Square">
+              <div class="aspect-frame-box ratio-1-1">
+                <span class="aspect-ratio-text">1:1</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="4:3" title="4:3 Standard">
+              <div class="aspect-frame-box ratio-4-3">
+                <span class="aspect-ratio-text">4:3</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="21:9" title="21:9 Ultrawide">
+              <div class="aspect-frame-box ratio-21-9">
+                <span class="aspect-ratio-text">21:9</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Resolution Dropdown Row -->
+        <div class="modal-form-row">
+          <label class="modal-label">Resolution</label>
+          <div class="custom-dropdown" id="dropdown-resolution" data-value="1080p">
+            <button type="button" class="custom-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Resolution">
+              <span class="custom-dropdown-label">1080p</span>
+              <svg class="custom-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            <div class="custom-dropdown-menu" role="listbox">
+              <div class="custom-dropdown-item" role="option" data-val="4K">4K</div>
+              <div class="custom-dropdown-item" role="option" data-val="2K">2K</div>
+              <div class="custom-dropdown-item is-selected" role="option" data-val="1080p">1080p</div>
+              <div class="custom-dropdown-item" role="option" data-val="720p">720p</div>
+              <div class="custom-dropdown-item" role="option" data-val="480p">480p</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. FPS Dropdown Row -->
+        <div class="modal-form-row">
+          <label class="modal-label">FPS</label>
+          <div class="custom-dropdown" id="dropdown-fps" data-value="60">
+            <button type="button" class="custom-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Frame Rate">
+              <span class="custom-dropdown-label">60 FPS</span>
+              <svg class="custom-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            <div class="custom-dropdown-menu" role="listbox">
+              <div class="custom-dropdown-item" role="option" data-val="120">120 FPS</div>
+              <div class="custom-dropdown-item is-selected" role="option" data-val="60">60 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="50">50 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="45">45 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="30">30 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="25">25 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="16">16 FPS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Background Color -->
+        <div class="modal-form-group">
+          <label class="modal-label">BACKGROUND COLOR</label>
+          <div class="modal-color-swatches" id="options-bgcolor">
+            <button type="button" class="modal-color-swatch swatch-transparent is-selected" data-val="transparent" title="Transparent"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #0d1109;" data-val="#0d1109" title="Matcha Canvas"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #98ce7b;" data-val="#98ce7b" title="Matcha Green"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #000000;" data-val="#000000" title="Black"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #00ff00;" data-val="#00ff00" title="Green"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #0047bb;" data-val="#0047bb" title="Blue"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Create Button -->
+      <footer class="modal-footer">
+        <button type="button" class="modal-btn-create" onclick="createNewProjectAction()">
+          <span>Create Project</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: IMPORT PROJECT MODAL
+       - Modular Drag & Drop container for project file ingestion
+       - Slide from top on mobile, center scale on desktop
+       - Closeable by clicking backdrop or native back button
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-import-project" role="dialog" aria-modal="true" aria-label="Import Project Dialog">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <header class="modal-header">
+        <h3 class="modal-title">Import Project</h3>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-dropzone" id="import-dropzone" tabindex="0" role="button" aria-label="Drop project file here or click to browse">
+          <input type="file" id="import-file-input" class="modal-dropzone-input" accept=".ofts,.xml" aria-hidden="true" style="display: none;">
+          <div class="dropzone-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="currentColor">
+              <path d="M4 4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8L10 4H4zm8 3c.55 0 1 .45 1 1v4.59l1.3-1.29c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-3 3a.996.996 0 0 1-1.41 0l-3-3a.996.996 0 1 1 1.41-1.41l1.29 1.29V8c0-.55.45-1 1-1z"/>
+            </svg>
+          </div>
+          <span class="dropzone-title">Drag &amp; Drop Project File here</span>
+          <span class="dropzone-subtitle">Select project package (.ofts) or Alight Motion preset (.xml)</span>
+          <div class="dropzone-formats">
+            <span class="dropzone-badge">.OFTS</span>
+            <span class="dropzone-badge">.XML (AM)</span>
+          </div>
+          <span class="dropzone-file-status" id="import-file-status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: PROJECT SETTINGS MODAL
+       - Configure project name, aspect ratio, resolution, fps, background color
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-project-settings" role="dialog" aria-modal="true" aria-label="Project Settings Dialog">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <header class="modal-header">
+        <h3 class="modal-title">Project Settings</h3>
+        <button type="button" class="modal-btn-close" aria-label="Close" onclick="Modal.close('modal-project-settings')">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <input type="hidden" id="settings-project-id">
+
+        <!-- 1. Project Name -->
+        <div class="modal-form-group">
+          <label class="modal-label" for="settings-input-name">PROJECT NAME</label>
+          <input type="text" id="settings-input-name" class="modal-input" placeholder="Enter project name" autocomplete="off" spellcheck="false">
+        </div>
+
+        <!-- 2. Aspect Ratio (Visual Frames) -->
+        <div class="modal-form-group">
+          <label class="modal-label">ASPECT RATIO</label>
+          <div class="modal-aspect-grid" id="settings-options-aspect-ratio">
+            <button type="button" class="aspect-ratio-frame is-selected" data-val="16:9" title="16:9 Landscape">
+              <div class="aspect-frame-box ratio-16-9">
+                <span class="aspect-ratio-text">16:9</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="9:16" title="9:16 Portrait">
+              <div class="aspect-frame-box ratio-9-16">
+                <span class="aspect-ratio-text">9:16</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="1:1" title="1:1 Square">
+              <div class="aspect-frame-box ratio-1-1">
+                <span class="aspect-ratio-text">1:1</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="4:3" title="4:3 Standard">
+              <div class="aspect-frame-box ratio-4-3">
+                <span class="aspect-ratio-text">4:3</span>
+              </div>
+            </button>
+            <button type="button" class="aspect-ratio-frame" data-val="21:9" title="21:9 Ultrawide">
+              <div class="aspect-frame-box ratio-21-9">
+                <span class="aspect-ratio-text">21:9</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Resolution Dropdown Row -->
+        <div class="modal-form-row">
+          <label class="modal-label">Resolution</label>
+          <div class="custom-dropdown" id="settings-dropdown-resolution" data-value="1080p">
+            <button type="button" class="custom-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Resolution">
+              <span class="custom-dropdown-label">1080p</span>
+              <svg class="custom-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            <div class="custom-dropdown-menu" role="listbox">
+              <div class="custom-dropdown-item" role="option" data-val="4K">4K</div>
+              <div class="custom-dropdown-item" role="option" data-val="2K">2K</div>
+              <div class="custom-dropdown-item is-selected" role="option" data-val="1080p">1080p</div>
+              <div class="custom-dropdown-item" role="option" data-val="720p">720p</div>
+              <div class="custom-dropdown-item" role="option" data-val="480p">480p</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. FPS Dropdown Row -->
+        <div class="modal-form-row">
+          <label class="modal-label">FPS</label>
+          <div class="custom-dropdown" id="settings-dropdown-fps" data-value="60">
+            <button type="button" class="custom-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Frame Rate">
+              <span class="custom-dropdown-label">60 FPS</span>
+              <svg class="custom-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            <div class="custom-dropdown-menu" role="listbox">
+              <div class="custom-dropdown-item" role="option" data-val="120">120 FPS</div>
+              <div class="custom-dropdown-item is-selected" role="option" data-val="60">60 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="50">50 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="45">45 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="30">30 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="25">25 FPS</div>
+              <div class="custom-dropdown-item" role="option" data-val="16">16 FPS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Background Color -->
+        <div class="modal-form-group">
+          <label class="modal-label">BACKGROUND COLOR</label>
+          <div class="modal-color-swatches" id="settings-options-bgcolor">
+            <button type="button" class="modal-color-swatch swatch-transparent is-selected" data-val="transparent" title="Transparent"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #0d1109;" data-val="#0d1109" title="Matcha Canvas"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #98ce7b;" data-val="#98ce7b" title="Matcha Green"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #000000;" data-val="#000000" title="Black"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #00ff00;" data-val="#00ff00" title="Green"></button>
+            <button type="button" class="modal-color-swatch" style="background-color: #0047bb;" data-val="#0047bb" title="Blue"></button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="modal-btn-create" onclick="saveProjectSettingsAction()">
+          <span>Save Settings</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: DELETE PROJECT CONFIRMATION MODAL
+       - Simple full-width layout, clean non-hyperbolic text
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-delete-project" role="dialog" aria-modal="true" aria-label="Delete Project Confirmation">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <header class="modal-header">
+        <h3 class="modal-title" style="color: var(--color-danger);">Delete Project</h3>
+        <button type="button" class="modal-btn-close" aria-label="Close" onclick="Modal.close('modal-delete-project')">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <p class="delete-prompt-simple" id="delete-project-prompt">
+          Delete project <strong id="delete-target-name">"New_Project"</strong>?
+        </p>
+        <input type="hidden" id="delete-project-id">
+      </div>
+
+      <footer class="modal-footer" style="gap: 8px;">
+        <button type="button" class="modal-btn-danger" id="btn-confirm-delete-project" onclick="confirmDeleteProjectAction()">
+          <span>Delete Project</span>
+        </button>
+        <button type="button" class="modal-btn-cancel-full" onclick="Modal.close('modal-delete-project')">
+          <span>Cancel</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: WELCOME / PRE-ALPHA NOTICE MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-welcome" role="dialog" aria-modal="true" aria-label="Welcome Notice Dialog">
+    <div class="modal-card welcome-modal-card" onclick="event.stopPropagation()">
+      <header class="welcome-modal-header">
+        <div class="welcome-header-title-box">
+          <h3 class="modal-title">SharkMotion Studio</h3>
+          <span class="welcome-badge">Alight Motion Web</span>
+        </div>
+        <button type="button" class="modal-btn-close" aria-label="Close" onclick="closeWelcomeModal()">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="welcome-modal-body">
+        <!-- Hero Welcome Banner -->
+        <div class="welcome-banner" style="border-left: 3px solid var(--color-primary); background: rgba(0, 210, 255, 0.07);">
+          <div class="welcome-banner-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--color-primary)">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+          </div>
+          <div class="welcome-banner-text">
+            <strong>Selamat Datang di Alight Motion Versi Web!</strong>
+            <p>SharkMotion Studio menghadirkan pengalaman motion graphics dan video editing Alight Motion langsung di peramban (browser) Anda tanpa perlu instalasi aplikasi tambahan.</p>
+          </div>
+        </div>
+
+        <!-- Feature Highlights -->
+        <div class="welcome-features-list">
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Impor Preset .XML &amp; Proyek .OFTS</strong>
+              <span>Dukungan penuh untuk impor preset Alight Motion (.XML) dan paket proyek (.OFTS) dengan keyframe serta susunan layer utuh.</span>
+            </div>
+          </div>
+
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Grafik Kurva Easing &amp; Keyframe Presisi</strong>
+              <span>Editor kurva kecepatan (speed &amp; value graph) dengan kontrol titik tangen Bézier fleksibel layaknya Alight Motion.</span>
+            </div>
+          </div>
+
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Multi-Layer Timeline, Blending &amp; Masking</strong>
+              <span>Dukungan layer video, audio, gambar, teks, shapes, null object, mode blending lengkap, dan grup masking.</span>
+            </div>
+          </div>
+
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>100% Privat &amp; Akselerasi GPU 60 FPS</strong>
+              <span>Rendering lokal berbasis WebCodecs dan WebGL yang cepat, mulus, dan aman tanpa perlu upload data ke server.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="welcome-modal-footer">
+        <label class="welcome-dismiss-label">
+          <input type="checkbox" id="welcome-dismiss-checkbox" class="welcome-dismiss-checkbox">
+          <span>Jangan tampilkan lagi</span>
+        </label>
+        <div class="welcome-footer-btns">
+          <button type="button" class="modal-btn-secondary" onclick="openDonateFromWelcome()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span>Donasi</span>
+          </button>
+          <button type="button" class="modal-btn-create" onclick="closeWelcomeModal()">
+            <span>Mulai Mengedit</span>
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODULAR POP-UP: DONATE / SUPPORT MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-donate" role="dialog" aria-modal="true" aria-label="Donate Dialog">
+    <div class="modal-card donate-modal-card" onclick="event.stopPropagation()">
+      <header class="donate-modal-header">
+        <div class="donate-header-title-box">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <h3 class="modal-title">Support SharkMotion</h3>
+        </div>
+        <button type="button" class="modal-btn-close" aria-label="Close" onclick="Modal.close()">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="donate-modal-body">
+        <p class="donate-lead-text">Your donation directly supports server costs, active feature development, and keeps SharkMotion free &amp; open-source for everyone.</p>
+
+        <div class="donate-cards-grid">
+          <!-- Saweria -->
+          <a href="https://saweria.co/sharkmotion" target="_blank" rel="noopener noreferrer" class="donate-card-btn">
+            <div class="donate-card-left">
+              <div class="donate-icon-badge">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+              <div class="donate-card-meta">
+                <span class="donate-card-name">Saweria</span>
+                <span class="donate-card-desc">Gopay, OVO, DANA, LinkAja, QRIS</span>
+              </div>
+            </div>
+            <div class="donate-card-arrow">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- PayPal -->
+          <a href="https://www.paypal.com/paypalme/sharkmotion" target="_blank" rel="noopener noreferrer" class="donate-card-btn">
+            <div class="donate-card-left">
+              <div class="donate-icon-badge">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path d="M20.067 8.478c.492.315.844.825.992 1.455.438 1.867-.534 3.753-2.314 4.708-1.077.578-2.348.874-3.66.874h-1.637c-.502 0-.928.368-1.002.866l-.778 5.253a.584.584 0 0 1-.577.498H7.382c-.37 0-.64-.35-.572-.714l2.802-15.01c.074-.396.417-.687.82-.687h5.127c2.25 0 3.992.518 4.508 2.757zm-4.705 4.095c.954 0 1.706-.217 2.155-.615.44-.39.638-.973.541-1.597-.196-1.258-1.341-1.678-2.846-1.678h-2.18l-.946 5.065h1.764c.502 0 1.054-.535 1.512-1.175z"/>
+                </svg>
+              </div>
+              <div class="donate-card-meta">
+                <span class="donate-card-name">PayPal</span>
+                <span class="donate-card-desc">International Donations (USD, EUR, etc.)</span>
+              </div>
+            </div>
+            <div class="donate-card-arrow">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- QRIS (Interactive Accordion) -->
+          <div class="donate-qris-container">
+            <button type="button" class="donate-card-btn" id="donate-qris-toggle" onclick="toggleQrisDisplay()">
+              <div class="donate-card-left">
+                <div class="donate-icon-badge">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v2h-3v-2zm-5 0h2v3h-2v-3zm2 5h2v3h-2v-3zm3-2h3v5h-5v-2h2v-3zm-2-3h3v2h-3v-2zM6 6h2v2H6V6zm10 0h2v2h-2V6zM6 16h2v2H6v-2z"/>
+                  </svg>
+                </div>
+                <div class="donate-card-meta">
+                  <span class="donate-card-name">QRIS</span>
+                  <span class="donate-card-desc">Scan via GoPay, OVO, DANA, BCA, QRIS, etc.</span>
+                </div>
+              </div>
+              <div class="donate-card-arrow qris-arrow" id="qris-arrow-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+              </div>
+            </button>
+            <div class="donate-qris-expanded" id="donate-qris-content" style="display: none;">
+              <div class="qris-image-wrapper">
+                <img src="assets/qris.png" alt="QRIS Code SharkMotion" class="qris-image" loading="lazy">
+              </div>
+              <div class="qris-action-row">
+                <a href="assets/qris.png" target="_blank" rel="noopener noreferrer" class="qris-open-btn">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                  </svg>
+                  <span>Open Full Image</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ==========================================================================
+       MODULAR POP-UP: OFTS EXPORT PROGRESS MODAL
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-ofts-progress" role="dialog" aria-modal="true" aria-label="Export OFTS Progress">
+    <div class="modal-card modal-progress-card" onclick="event.stopPropagation()">
+      <h3 class="modal-title modal-progress-title" id="ofts-progress-title">Exporting .ofts</h3>
+      <div class="modal-progress-track">
+        <div class="modal-progress-fill" id="ofts-progress-fill" style="width: 0%;"></div>
+      </div>
+      <div class="modal-progress-details">
+        <span class="modal-progress-percent" id="ofts-progress-percent">0%</span>
+        <span class="modal-progress-status" id="ofts-progress-status">Packing project...</span>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="js/jszip.min.js"></script>
+  <script src="js/am-xml-parser.js?v=1"></script>
+  <script src="js/db.js?v=0.1"></script>
+  <script src="js/modal.js?v=0.1"></script>
+  <script src="js/context-menu.js?v=0.1"></script>
+  <script src="js/main.js?v=0.1"></script>
+</body>
+</html>

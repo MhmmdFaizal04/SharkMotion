@@ -1,0 +1,1093 @@
+/* ==========================================================================
+   LAYOUT.CSS - SharkMotion Studio Fullscreen Canvas & Floating Cyber Deck
+   Layout: Kinetic Motion Visualizer Core + Floating Glassmorphic Deck
+   Color Tokens: Deep Oceanic Palette from theme.css
+   Typography: Cal Sans Bold / SemiBold
+   ========================================================================== */
+
+/* --- Universal Reset & Disables --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: var(--font-brand);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+*::-webkit-scrollbar-track {
+  display: none !important;
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+  font-family: var(--font-brand);
+  color: var(--text-primary);
+  touch-action: pan-x pan-y;
+  position: fixed;
+  inset: 0;
+}
+
+/* ==========================================================================
+   FULLSCREEN CANVAS LAYOUT SHELL
+   ========================================================================== */
+.app-viewport.studio-canvas-layout {
+  width: 100%;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+  background-image: radial-gradient(rgba(0, 210, 255, 0.06) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+}
+
+/* ==========================================================================
+   1. TOP NAVIGATION HEADER
+   ========================================================================== */
+.studio-top-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 84px;
+  padding: 28px 40px 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 25;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.studio-top-nav > * {
+  pointer-events: auto;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.brand-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.5));
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand-title {
+  font-family: var(--font-brand);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.7px;
+  margin: 0;
+}
+
+.brand-subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-subtitle {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.badge-pre-alpha {
+  background-color: var(--badge-prealpha-bg);
+  color: var(--badge-prealpha-text);
+  font-family: var(--font-brand);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.studio-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.studio-nav-btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(15, 26, 46, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  color: var(--color-primary);
+  font-family: var(--font-brand);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  transition: all 0.16s ease;
+  box-sizing: border-box;
+}
+
+.studio-nav-btn:hover {
+  background: var(--color-primary);
+  color: var(--bg-canvas);
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.studio-nav-btn:active {
+  transform: scale(0.96);
+}
+
+.btn-info-nav {
+  padding: 0;
+  width: 36px;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   AMBIENT SCATTERED EDITING CANVAS (Fullscreen Background Particles)
+   ========================================================================== */
+.studio-ambient-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.ambient-item {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ambient-spline-top-left {
+  top: 18%;
+  left: 4.5%;
+  width: 220px;
+  height: 90px;
+}
+
+.ambient-timeline-clip {
+  top: 54%;
+  left: 4%;
+  width: 220px;
+  height: 54px;
+}
+
+.ambient-cursor {
+  top: 41%;
+  left: 13.5%;
+}
+
+.ambient-audio-bars {
+  bottom: 16%;
+  left: 4.5%;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.ambient-audio-bars span {
+  width: 3px;
+  background: rgba(0, 210, 255, 0.35);
+  border-radius: 2px;
+}
+
+.ambient-scissors {
+  bottom: 13%;
+  left: 24%;
+}
+
+.ambient-spline-bottom {
+  bottom: 26%;
+  left: 27%;
+  width: 200px;
+  height: 75px;
+}
+
+.ambient-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 14px;
+  background: rgba(8, 16, 28, 0.65);
+  border: 1px solid rgba(0, 210, 255, 0.18);
+  font-family: var(--font-brand);
+  font-size: 11px;
+  color: rgba(0, 210, 255, 0.55);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ambient-bubble-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.65);
+}
+
+.ambient-bubble-1 {
+  top: 24%;
+  left: 18%;
+}
+
+.ambient-bubble-2 {
+  top: 48%;
+  left: 9%;
+}
+
+.ambient-bubble-3 {
+  bottom: 16%;
+  left: 32%;
+}
+
+.ambient-bubble-4 {
+  top: 36px;
+  left: 52%;
+}
+
+.ambient-sprocket-top {
+  top: 32px;
+  left: 31%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.28;
+}
+
+.ambient-sprocket-bottom {
+  bottom: 30px;
+  left: 49%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.22;
+}
+
+.sprocket-row {
+  display: flex;
+  gap: 5px;
+}
+
+.sprocket-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  border: 1px solid #00d2ff;
+}
+
+.ambient-playback-controls {
+  top: 36px;
+  right: 230px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.4;
+}
+
+.ambient-clapperboard-right {
+  top: 22%;
+  right: clamp(400px, 32vw, 470px);
+  opacity: 0.3;
+}
+
+.ambient-clapperboard-bottom {
+  bottom: 65px;
+  left: 45%;
+  opacity: 0.28;
+}
+
+.ambient-kf-scattered {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.32;
+}
+
+.ambient-kf-node {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 1.4px solid #00d2ff;
+  transform: rotate(45deg);
+  background: rgba(0, 210, 255, 0.15);
+}
+
+/* ==========================================================================
+   2. CENTER KINETIC MOTION TRANSFORM STAGE
+   ========================================================================== */
+.kinetic-motion-core {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 210px);
+  transform: translate(-50%, -50%);
+  width: clamp(380px, 38vw, 500px);
+  height: clamp(380px, 38vw, 500px);
+  aspect-ratio: 1/1;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* Ambient Radial Oceanic Halo */
+.core-ambient-glow {
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.14) 0%, rgba(14, 165, 233, 0.04) 50%, transparent 70%);
+  filter: blur(34px);
+}
+
+.core-motion-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Center Framed Logo */
+.core-logo-container {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.core-center-logo {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.75));
+}
+
+/* Telemetry Pills */
+.core-telemetry-row {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(10, 18, 32, 0.75);
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  font-family: var(--font-brand);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  backdrop-filter: blur(8px);
+}
+
+.telemetry-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+/* ==========================================================================
+   3. FLOATING GLASSMORPHIC STUDIO DECK (Project Management Console)
+   ========================================================================== */
+.studio-deck-container {
+  position: absolute;
+  top: 32px;
+  right: 36px;
+  bottom: 32px;
+  width: clamp(380px, 30vw, 440px);
+  background: rgba(10, 18, 32, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 210, 255, 0.24);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 210, 255, 0.08);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 18px;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* Deck Header */
+.deck-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deck-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.deck-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deck-title {
+  font-family: var(--font-brand);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.project-count-badge {
+  background: var(--color-primary);
+  color: var(--bg-canvas);
+  font-family: var(--font-brand);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Integrated Search Input */
+.deck-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: rgba(5, 10, 18, 0.7);
+  border: 1px solid rgba(0, 210, 255, 0.18);
+  border-radius: 10px;
+  padding: 0 10px;
+  height: 36px;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.deck-search-box:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.2);
+}
+
+.deck-search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.deck-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-brand);
+  font-size: 12.5px;
+  min-width: 0;
+}
+
+.deck-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.deck-search-clear {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deck-search-clear:hover {
+  color: var(--text-primary);
+}
+
+/* Deck Action Buttons: New Project & Import Project */
+.deck-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 74px;
+}
+
+.deck-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.deck-btn-bg-icon {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  width: 44px;
+  height: 44px;
+  color: var(--color-primary);
+  opacity: 0.25;
+  transform: rotate(-25deg);
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.deck-btn-bg-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.deck-btn-label {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-brand);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: right;
+  transition: color 0.15s ease;
+}
+
+.deck-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 210, 255, 0.3);
+}
+
+.deck-btn:hover .deck-btn-bg-icon {
+  opacity: 0.95;
+  color: var(--bg-canvas);
+  transform: rotate(-15deg) scale(1.1);
+}
+
+.deck-btn:hover .deck-btn-label {
+  color: var(--bg-canvas);
+}
+
+.deck-btn:active {
+  transform: scale(0.97);
+}
+
+/* Quick Canvas Ratio Chips */
+.deck-quick-ratios {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.ratio-chips-label {
+  font-family: var(--font-brand);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 2px;
+}
+
+.ratio-chip {
+  background: rgba(15, 26, 46, 0.8);
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-family: var(--font-brand);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.ratio-chip:hover {
+  background: var(--color-primary);
+  color: var(--bg-canvas);
+  border-color: var(--color-primary);
+}
+
+/* Scrollable Projects Pool */
+.deck-projects-pool {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(5, 10, 18, 0.65);
+  border: 1px solid rgba(0, 210, 255, 0.1);
+  border-radius: 14px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.projects-list-container {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   4. PROJECT ITEM CARDS (In Deck)
+   ========================================================================== */
+.project-swipe-container {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-panel-inner);
+  border: 1px solid rgba(0, 210, 255, 0.08);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  touch-action: pan-y;
+  box-sizing: border-box;
+}
+
+.project-swipe-container:hover {
+  border-color: rgba(0, 210, 255, 0.45);
+  background: rgba(15, 26, 46, 0.95);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  cursor: pointer;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+}
+
+.project-item:hover {
+  background: rgba(0, 210, 255, 0.06);
+}
+
+/* Left: Aspect Ratio Pill Badge */
+.project-item-left {
+  flex-shrink: 0;
+}
+
+.project-ratio-badge {
+  width: 44px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-brand);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* Center: Project Title & Specs Subrow */
+.project-item-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-name {
+  font-family: var(--font-brand);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.2px;
+}
+
+.project-row-sub {
+  font-family: var(--font-brand);
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.project-bullet {
+  opacity: 0.5;
+}
+
+/* Right: File Size & 3-Dot Options Button */
+.project-item-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.project-size {
+  font-family: var(--font-brand);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.project-card-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.project-card-menu-btn:hover {
+  color: var(--color-primary);
+  background: var(--bg-panel);
+}
+
+/* Background Reveal Swipe Actions */
+.project-swipe-action {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  font-family: var(--font-brand);
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  cursor: pointer;
+}
+
+.project-swipe-action.action-delete {
+  left: 0;
+  width: 100%;
+  justify-content: flex-start;
+  background-color: var(--color-danger);
+  color: var(--bg-canvas);
+}
+
+.project-swipe-action.action-export {
+  right: 0;
+  width: 100%;
+  justify-content: flex-end;
+  background-color: var(--color-primary);
+  color: var(--bg-canvas);
+}
+
+.project-swipe-action svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Empty & Search No-Match States */
+.projects-empty {
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  color: var(--text-muted);
+}
+
+.projects-empty-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 210, 255, 0.08);
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.projects-empty-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.empty-title {
+  font-family: var(--font-brand);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.empty-subtitle {
+  font-family: var(--font-brand);
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 260px;
+  line-height: 1.35;
+}
+
+.btn-create-first {
+  margin-top: 4px;
+  background: var(--color-primary);
+  color: var(--bg-canvas);
+  font-family: var(--font-brand);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 14px rgba(0, 210, 255, 0.25);
+}
+
+.btn-create-first:hover {
+  background: var(--color-primary-hover);
+}
+
+.projects-no-match {
+  padding: 32px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-brand);
+  font-size: 12.5px;
+}
+
+/* ==========================================================================
+   5. TOAST NOTIFICATION
+   ========================================================================== */
+.dashboard-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background-color: var(--color-primary);
+  color: var(--bg-canvas);
+  font-family: var(--font-brand);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 99999;
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.35);
+}
+
+.dashboard-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   6. RESPONSIVE ADAPTIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet (641px - 1100px) */
+@media (min-width: 641px) and (max-width: 1100px) {
+  .kinetic-motion-core {
+    left: calc(50% - 150px);
+    width: clamp(340px, 38vw, 440px);
+    height: clamp(340px, 38vw, 440px);
+  }
+
+  .studio-deck-container {
+    top: 24px;
+    right: 24px;
+    bottom: 24px;
+    width: clamp(360px, 36vw, 400px);
+  }
+}
+
+/* Mobile Devices (<= 640px) */
+@media (max-width: 640px) {
+  .app-viewport.studio-canvas-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .studio-ambient-canvas {
+    display: none;
+  }
+
+  .studio-top-nav {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    height: auto;
+    padding: 20px 20px 0 20px;
+    flex-shrink: 0;
+  }
+
+  .brand-title {
+    font-size: 26px;
+  }
+
+  .brand-logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .kinetic-motion-core {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 220px;
+    height: 220px;
+    margin: 4px auto 8px auto;
+    flex-shrink: 0;
+  }
+
+  .core-logo-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .core-center-logo {
+    width: 46px;
+    height: 46px;
+  }
+
+  .core-telemetry-row {
+    display: none;
+  }
+
+  .studio-deck-container {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border-radius: 28px 28px 0 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px)) 16px;
+    gap: 10px;
+  }
+
+  .deck-action-buttons {
+    height: 68px;
+  }
+
+  .deck-btn-label {
+    font-size: 13.5px;
+  }
+}
