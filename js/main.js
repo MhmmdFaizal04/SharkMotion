@@ -380,6 +380,11 @@ function renderProjects(projects, container, countBadge) {
           </div>
           <div class="project-item-right">
             <span class="project-size" data-project-size-id="${escapeHtml(project.id)}">${escapeHtml(size)}</span>
+            <button type="button" class="project-card-delete-btn" data-id="${escapeHtml(project.id)}" data-name="${escapeHtml(name)}" title="Delete project" aria-label="Delete project">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+            </button>
             <button type="button" class="project-card-menu-btn" data-id="${escapeHtml(project.id)}" title="More options" aria-label="More options">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
@@ -392,6 +397,19 @@ function renderProjects(projects, container, countBadge) {
   }).join('');
 
   bindProjectSwipeGestures(container);
+
+  // Bind direct card delete button
+  container.querySelectorAll('.project-card-delete-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const pId = btn.dataset.id;
+      const pName = btn.dataset.name || 'Project';
+      const confirmed = window.confirm(`Are you sure you want to permanently delete "${pName}"?\n\nThis action cannot be undone.`);
+      if (!confirmed) return;
+      await executePermanentProjectDeletion(pId, pName);
+    });
+  });
 
   // Bind 3-dot context menu trigger on cards
   container.querySelectorAll('.project-card-menu-btn').forEach(btn => {
@@ -882,7 +900,6 @@ function openDeleteModal(projectId, currentName) {
   const modal = document.getElementById('modal-delete-project');
   const idInput = document.getElementById('delete-project-id');
   const targetNameEl = document.getElementById('delete-target-name');
-  const promptEl = document.getElementById('delete-project-prompt');
 
   if (idInput) {
     idInput.value = projectId || '';
@@ -892,9 +909,6 @@ function openDeleteModal(projectId, currentName) {
   const displayName = `"${cleanName}"`;
   if (targetNameEl) {
     targetNameEl.textContent = displayName;
-  }
-  if (promptEl) {
-    promptEl.innerHTML = `Delete project <strong>${escapeHtml(displayName)}</strong>?`;
   }
 
   // Close project settings modal if it was open so dialogs don't clash
@@ -909,56 +923,41 @@ function openDeleteModal(projectId, currentName) {
 }
 
 /**
- * Confirms deletion of project from modal
+ * Executes full project deletion across DOM, memory, IndexedDB, and localStorage
  */
-async function confirmDeleteProjectAction() {
-  const idInput = document.getElementById('delete-project-id');
-  const targetNameEl = document.getElementById('delete-target-name');
-  let projectId = (idInput && idInput.value) ? idInput.value.trim() : '';
-  const rawName = targetNameEl ? targetNameEl.textContent.replace(/^["'\u201C\u201D]|["'\u201C\u201D]$/g, '').trim() : '';
-
-  // Close modal immediately without triggering history.back to prevent unwanted browser navigation
-  if (window.Modal) {
-    window.Modal.close(false);
-  }
-
+async function executePermanentProjectDeletion(projectId, projectName) {
   const listContainer = document.getElementById('projects-container');
   const countBadge = document.getElementById('project-count-badge');
 
-  // Fallback: Check activeDeleteProjectId
-  if (!projectId && activeDeleteProjectId) {
-    projectId = activeDeleteProjectId;
-  }
+  let targetId = projectId ? String(projectId).trim() : (activeDeleteProjectId || '');
+  let rawName = projectName ? String(projectName).trim() : '';
 
-  // Fallback: If still empty, match by target name from database
-  if (!projectId && rawName && window.SharkDatabase) {
+  // Fallback: If no targetId, resolve from storage by name
+  if (!targetId && rawName && window.SharkDatabase) {
     try {
       const all = await window.SharkDatabase.getProjects();
       const found = all.find(p => p && (p.name === rawName || p.id === rawName));
-      if (found) projectId = found.id;
+      if (found) targetId = found.id;
     } catch (_) {}
   }
 
   // Fallback: Single remaining card on screen
-  if (!projectId && listContainer) {
+  if (!targetId && listContainer) {
     const cards = listContainer.querySelectorAll('.project-swipe-container');
     if (cards.length === 1 && cards[0].dataset.id) {
-      projectId = cards[0].dataset.id;
+      targetId = cards[0].dataset.id;
     }
   }
 
-  const targetIdentifier = projectId || rawName;
-
-  // Immediately purge card from DOM for zero-latency user feedback
+  // 1. Immediately purge card from DOM for zero-latency user feedback
   if (listContainer) {
     const cards = listContainer.querySelectorAll('.project-swipe-container');
     cards.forEach(card => {
       const cardId = card.dataset.id;
       const cardName = card.dataset.name;
       if (
-        (projectId && (cardId === projectId || String(cardId).trim() === String(projectId).trim())) ||
-        (rawName && (cardName === rawName || String(cardName).trim() === String(rawName).trim())) ||
-        (targetIdentifier && (cardId === targetIdentifier || cardName === targetIdentifier))
+        (targetId && (cardId === targetId || String(cardId).trim() === targetId)) ||
+        (rawName && (cardName === rawName || String(cardName).trim() === rawName))
       ) {
         card.remove();
       }
@@ -970,7 +969,14 @@ async function confirmDeleteProjectAction() {
     }
   }
 
-  // Execute persistent deletion from database
+  // 2. Clear emergency autosaves
+  try {
+    localStorage.removeItem('sharktool_emergency_layers');
+    localStorage.removeItem('oft_emergency_layers');
+  } catch (_) {}
+
+  // 3. Persistent deletion from database
+  const targetIdentifier = targetId || rawName;
   if (targetIdentifier && window.SharkDatabase) {
     try {
       await window.SharkDatabase.deleteProject(targetIdentifier);
@@ -982,15 +988,23 @@ async function confirmDeleteProjectAction() {
       console.warn('Delete project error:', e);
       showDashboardToast('Failed to delete project');
     }
+  } else {
+    // Fallback localStorage purge
+    try {
+      const stored = JSON.parse(localStorage.getItem('sharktools_projects') || '[]');
+      const filtered = stored.filter(p => p && p.id !== targetId && p.name !== rawName);
+      localStorage.setItem('sharktools_projects', JSON.stringify(filtered));
+      showDashboardToast('Project deleted successfully');
+    } catch (_) {}
   }
 
-  // Refresh project list from database, ensuring deleted project is strictly excluded
+  // 4. Reload from database and strictly exclude deleted project
   if (listContainer && window.SharkDatabase) {
     try {
       let projects = await window.SharkDatabase.getProjects();
-      projects = projects.filter(p => {
+      projects = (projects || []).filter(p => {
         if (!p) return false;
-        if (projectId && (p.id === projectId || String(p.id).trim() === String(projectId).trim())) return false;
+        if (targetId && (p.id === targetId || String(p.id).trim() === targetId)) return false;
         if (rawName && p.name === rawName) return false;
         return true;
       });
@@ -1002,14 +1016,39 @@ async function confirmDeleteProjectAction() {
 }
 
 /**
+ * Confirms deletion of project from modal
+ */
+async function confirmDeleteProjectAction() {
+  const idInput = document.getElementById('delete-project-id');
+  const targetNameEl = document.getElementById('delete-target-name');
+  let projectId = (idInput && idInput.value) ? idInput.value.trim() : (activeDeleteProjectId || '');
+  let rawName = targetNameEl ? targetNameEl.textContent.replace(/^["'\u201C\u201D]|["'\u201C\u201D]$/g, '').trim() : '';
+
+  // Close modal immediately without triggering history.back
+  if (window.Modal) {
+    window.Modal.close(false);
+  }
+
+  await executePermanentProjectDeletion(projectId, rawName);
+}
+
+/**
  * Triggers delete flow directly from the Project Settings modal
  */
-function deleteCurrentProjectFromSettings() {
+async function deleteCurrentProjectFromSettings() {
   const idInput = document.getElementById('settings-project-id');
   const nameInput = document.getElementById('settings-input-name');
-  const pId = idInput ? idInput.value : '';
-  const pName = nameInput ? nameInput.value : 'Project';
-  openDeleteModal(pId, pName);
+  const pId = (idInput && idInput.value) ? idInput.value.trim() : (activeDeleteProjectId || '');
+  const pName = (nameInput && nameInput.value) ? nameInput.value.trim() : 'Project';
+
+  const confirmed = window.confirm(`Are you sure you want to permanently delete "${pName}"?\n\nThis will remove the project and all associated media.`);
+  if (!confirmed) return;
+
+  if (window.Modal) {
+    window.Modal.close(false);
+  }
+
+  await executePermanentProjectDeletion(pId, pName);
 }
 
 /**
@@ -1403,6 +1442,7 @@ window.saveRenameProjectAction = saveRenameProjectAction;
 window.openProjectSettingsModal = openProjectSettingsModal;
 window.saveProjectSettingsAction = saveProjectSettingsAction;
 window.deleteCurrentProjectFromSettings = deleteCurrentProjectFromSettings;
+window.executePermanentProjectDeletion = executePermanentProjectDeletion;
 window.syncWelcomeVersionTags = syncWelcomeVersionTags;
 window.createNewProjectAction = createNewProjectAction;
 window.closeWelcomeModal = closeWelcomeModal;

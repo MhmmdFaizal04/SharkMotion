@@ -154,7 +154,7 @@ window.ContextMenu = (function () {
 
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        close();
+        close(false);
         if (typeof item.action === 'function') {
           item.action(options.target);
         }

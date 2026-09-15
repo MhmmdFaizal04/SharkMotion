@@ -48,7 +48,6 @@ window.SharkDatabase = (function () {
     if (_deletedIds.has(pid) || _deletedIds.has(strId) || _deletedIds.has(String(pid))) return true;
     var num = Number(strId);
     if (!isNaN(num) && _deletedIds.has(num)) return true;
-    if (p.name && (_deletedIds.has(p.name) || _deletedIds.has(String(p.name).trim()))) return true;
     return false;
   }
 
@@ -1631,13 +1630,18 @@ window.SharkDatabase = (function () {
    */
   async function deleteProject(id) {
     if (!id) return false;
+    if (typeof id === 'object' && id !== null) {
+      id = id.id || id.name || '';
+    }
+    if (!id) return false;
+
     var targetId = String(id).trim();
     var matchedIds = new Set([id, targetId]);
 
     _deletedIds.add(id);
     _deletedIds.add(targetId);
 
-    // Also find any project with matching name or id in local copy and add all their IDs to _deletedIds
+    // Also find any project with matching name or id in local copy and add their real IDs to matchedIds
     var list = getLocalProjects();
     list.forEach(function (p) {
       if (p) {
@@ -1663,7 +1667,7 @@ window.SharkDatabase = (function () {
     var filtered = list.filter(function (p) {
       if (!p) return false;
       if (matchedIds.has(p.id) || matchedIds.has(String(p.id).trim()) || isProjectDeleted(p)) return false;
-      if (p.name && (matchedIds.has(p.name) || p.name === targetId)) return false;
+      if (p.name && (p.name === id || p.name === targetId)) return false;
       return true;
     });
     saveLocalProjects(filtered);
@@ -1728,7 +1732,16 @@ window.SharkDatabase = (function () {
                 if (cursor) {
                   var val = cursor.value;
                   if (val) {
-                    if (matchedIds.has(val.id) || matchedIds.has(String(val.id).trim()) || (val.name && (matchedIds.has(val.name) || val.name === targetId))) {
+                    var vId = val.id;
+                    var vStr = String(vId).trim();
+                    var vName = val.name;
+                    if (
+                      matchedIds.has(vId) ||
+                      matchedIds.has(vStr) ||
+                      _deletedIds.has(vId) ||
+                      _deletedIds.has(vStr) ||
+                      (vName && (vName === id || vName === targetId))
+                    ) {
                       try { cursor.delete(); } catch (_) {}
                     }
                   }
